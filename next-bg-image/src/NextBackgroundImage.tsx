@@ -1,6 +1,6 @@
 import React, { useId } from 'react';
 import { StaticImageData, unstable_getImgProps } from 'next/image';
-import getImgData from './getImgData';
+import getImageData from './lib';
 
 interface Props {
   src: StaticImageData;
@@ -25,9 +25,7 @@ const NextBackgroundImage: React.FC<Props> = ({
     width: src.width,
     height: src.height,
   });
-  const urls = imageProps.props.srcSet?.split(', ').map((str) => str.split(' ')[0]) ?? [];
-  console.log(urls);
-  const data = getImgData(urls);
+  const data = getImageData(imageProps.props.srcSet || ``);
 
   return (
     <>

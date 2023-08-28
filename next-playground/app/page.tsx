@@ -5,7 +5,11 @@ import Win from '@/public/win.jpeg';
 export default function Home() {
   return (
     <main className="">
-      <NextBackgroundImage src={Win} className="p-20 text-white text-xl">
+      <NextBackgroundImage
+        src={Win}
+        className="p-20 text-white text-xl"
+        position="bottom"
+      >
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel velit itaque mollitia
         ut ducimus totam numquam, veniam, repellat aperiam harum odio deserunt! Ab, qui
         ullam! Provident, saepe! Voluptas, dolore ipsa. Lorem ipsum dolor sit amet
