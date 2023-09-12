@@ -1,6 +1,6 @@
 import React, { useId } from 'react';
 import { StaticImageData, unstable_getImgProps } from 'next/image';
-import getImageData from './lib';
+import getImageData, { generateMediaQuery } from './lib';
 
 interface Props {
   src: StaticImageData;
@@ -24,24 +24,16 @@ const NextBackgroundImage: React.FC<Props> = ({
     sizes: `hello`,
     width: src.width,
     height: src.height,
+    placeholder: `blur`,
   });
-  const data = getImageData(imageProps.props.srcSet || ``);
+  console.log(imageProps.props);
+  const data = getImageData(imageProps.props.srcSet || ``, src.width, src.src);
 
   return (
     <>
       <style
         dangerouslySetInnerHTML={{
-          __html: `${data
-            .map(
-              (img) => `
-            @media (max-width: ${img.width}px) {
-              #${id} {
-                background-image: url(${img.url});
-              }
-            }
-          `,
-            )
-            .join(`\n`)}`,
+          __html: data.map((decl) => generateMediaQuery(decl, id)).join(`\n`),
         }}
       />
       <div
