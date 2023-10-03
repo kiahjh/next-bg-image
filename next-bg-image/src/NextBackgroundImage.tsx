@@ -1,12 +1,17 @@
-import React, { useId } from 'react';
-import { StaticImageData, unstable_getImgProps } from 'next/image';
-import getImageData, { generateMediaQuery } from './lib';
+"use client";
+
+import React, { useEffect, useId, useState } from "react";
+import { unstable_getImgProps } from "next/image";
+import type { StaticImageData } from "next/image";
+import getImageData, { generateMediaQuery, lazyCss } from "./lib";
+import "./next-bg-image.css";
 
 interface Props {
   src: StaticImageData;
   children: React.ReactNode;
-  size?: 'cover' | 'contain' | 'full'; // TODO: add custom stuff
-  position?: 'center' | 'top' | 'bottom' | 'left' | 'right'; // TODO: add custom stuff
+  lazyLoad?: boolean;
+  size?: "cover" | "contain" | "full"; // TODO: add custom stuff
+  position?: "center" | "top" | "bottom" | "left" | "right"; // TODO: add custom stuff
   className?: string;
 }
 
@@ -14,10 +19,11 @@ const NextBackgroundImage: React.FC<Props> = ({
   src,
   children,
   className,
-  size = 'cover',
-  position = 'center',
+  lazyLoad = false,
+  size = `cover`,
+  position = `center`,
 }) => {
-  const id = useId().replace(/:/g, '');
+  const id = useId().replace(/:/g, ``);
   const imageProps = unstable_getImgProps({
     src,
     alt: ``,
@@ -26,24 +32,37 @@ const NextBackgroundImage: React.FC<Props> = ({
     height: src.height,
     placeholder: `blur`,
   });
-  console.log(imageProps.props);
-  const data = getImageData(imageProps.props.srcSet || ``, src.width, src.src);
+  const { decls, blurry } = getImageData(
+    imageProps.props.srcSet || ``,
+    src.width,
+    src.src,
+    lazyLoad,
+  );
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setReady(true), 1000);
+  });
 
   return (
     <>
       <style
         dangerouslySetInnerHTML={{
-          __html: data.map((decl) => generateMediaQuery(decl, id)).join(`\n`),
+          __html:
+            decls
+              .map((decl) => generateMediaQuery(decl, id, lazyLoad))
+              .join(`\n`) + lazyCss(blurry, id, position, size),
         }}
       />
       <div
-        className={className}
         id={id}
         style={{
           backgroundSize: size,
           backgroundPosition: position,
-          border: `solid 8px red`,
+          position: `relative`,
+          // border: `8px solid red`,
         }}
+        className={`next_bg_image__container ${ready && `loaded`} ${className}`}
       >
         {children}
       </div>
