@@ -1,2 +1,3 @@
 - [ ] explore base 64 data urls for blur images
 - [ ] make filter transition better for debluring
+- [ ] look into intersection observer firing twice (with console.log)

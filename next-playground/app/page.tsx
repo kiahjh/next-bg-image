@@ -1,10 +1,11 @@
 import Image from "next/image";
 import { NextBackgroundImage } from "@friends-library/next-bg-image";
-import Win from "@/public/win.jpeg";
+import Win from "@/public/win-small.png";
 
 export default function Home() {
   return (
-    <main className="h-screen bg-black">
+    <main className="bg-black flex flex-col pb-80">
+      <div className="h-[200vh]"></div>
       <NextBackgroundImage
         src={Win}
         className="p-20 text-white"

@@ -5,6 +5,7 @@ import { unstable_getImgProps } from "next/image";
 import type { StaticImageData } from "next/image";
 import getImageData, { generateMediaQuery, lazyCss } from "./lib";
 import "./next-bg-image.css";
+import { useIntersectionObserver } from "./hooks";
 
 interface Props {
   src: StaticImageData;
@@ -38,11 +39,33 @@ const NextBackgroundImage: React.FC<Props> = ({
     src.src,
     lazyLoad,
   );
-  const [ready, setReady] = useState(false);
+  /*
+   *  next two steps that seem obvious to jared:
+   *   1. tweak props for customizable rootMargin
+   *   2. the beefier task: don't unblur until image is fully loaded
+   *
+   * */
+  const { intersected, ref } = useIntersectionObserver(lazyLoad, {
+    rootMargin: `500px`,
+    threshold: 0,
+  });
+
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setReady(true), 1000);
-  });
+    if (intersected) {
+      const img = new Image();
+      img.onload = () => setImageLoaded(true);
+      img.onerror = () => setImageLoaded(true);
+      const url = decls.find(
+        (decl) =>
+          decl.min <= window.innerWidth && decl.max >= window.innerWidth,
+      )?.url;
+      if (url) {
+        img.src = url;
+      }
+    }
+  }, [intersected, decls]);
 
   return (
     <>
@@ -55,6 +78,7 @@ const NextBackgroundImage: React.FC<Props> = ({
         }}
       />
       <div
+        ref={ref}
         id={id}
         style={{
           backgroundSize: size,
@@ -62,8 +86,11 @@ const NextBackgroundImage: React.FC<Props> = ({
           position: `relative`,
           // border: `8px solid red`,
         }}
-        className={`next_bg_image__container ${ready && `loaded`} ${className}`}
+        className={`next_bg_image__container ${
+          imageLoaded && `loaded`
+        } ${className}`}
       >
+        {String(intersected)}
         {children}
       </div>
     </>

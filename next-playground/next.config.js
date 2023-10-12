@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@friends-library/next-bg-image'],
+  transpilePackages: ["@friends-library/next-bg-image"],
 };
 
 module.exports = nextConfig;

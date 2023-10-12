@@ -8,53 +8,53 @@ describe(`getting useable data from srcSet`, () => {
     const expected: CssDecl[] = [
       {
         url: `/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwin.63858d56.jpeg&w=384&q=75`,
-        type: `max-width`,
-        width: 384,
+        min: 0,
+        max: 384,
       },
       {
         url: `/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwin.63858d56.jpeg&w=640&q=75`,
-        type: `max-width`,
-        width: 640,
+        min: 385,
+        max: 640,
       },
       {
         url: `/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwin.63858d56.jpeg&w=750&q=75`,
-        type: `max-width`,
-        width: 750,
+        min: 641,
+        max: 750,
       },
       {
         url: `/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwin.63858d56.jpeg&w=828&q=75`,
-        type: `max-width`,
-        width: 828,
+        min: 751,
+        max: 828,
       },
       {
         url: `/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwin.63858d56.jpeg&w=1080&q=75`,
-        type: `max-width`,
-        width: 1080,
+        min: 829,
+        max: 1080,
       },
       {
         url: `/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwin.63858d56.jpeg&w=1200&q=75`,
-        type: `max-width`,
-        width: 1200,
+        min: 1081,
+        max: 1200,
       },
       {
         url: `/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwin.63858d56.jpeg&w=1920&q=75`,
-        type: `max-width`,
-        width: 1920,
+        min: 1201,
+        max: 1920,
       },
       {
         url: `/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwin.63858d56.jpeg&w=2048&q=75`,
-        type: `max-width`,
-        width: 2048,
+        min: 1921,
+        max: 2048,
       },
       {
         url: `/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwin.63858d56.jpeg&w=3840&q=75`,
-        type: `max-width`,
-        width: 3840,
+        min: 2049,
+        max: 3840,
       },
       {
         url: `full-size.jpg`,
-        type: `min-width`,
-        width: 3841,
+        min: 3841,
+        max: Infinity,
       },
     ];
     expect(getImageData(srcSet, 10000, `full-size.jpg`, false).decls).toEqual(
@@ -64,20 +64,22 @@ describe(`getting useable data from srcSet`, () => {
       ...expected.slice(0, 4),
       {
         url: `full-size.jpg`,
-        type: `min-width`,
-        width: 829,
+        min: 829,
+        max: Infinity,
       },
     ]);
     expect(getImageData(srcSet, 384, `full-size.jpg`, false).decls).toEqual([
       {
         url: `full-size.jpg`,
-        type: `unbounded`,
+        min: 0,
+        max: Infinity,
       },
     ]);
     expect(getImageData(srcSet, 200, `full-size.jpg`, false).decls).toEqual([
       {
         url: `full-size.jpg`,
-        type: `unbounded`,
+        min: 0,
+        max: Infinity,
       },
     ]);
     expect(getImageData(srcSet, 384, `full-size.jpg`, true)).toEqual({
@@ -85,7 +87,8 @@ describe(`getting useable data from srcSet`, () => {
       decls: [
         {
           url: `full-size.jpg`,
-          type: `unbounded`,
+          min: 0,
+          max: Infinity,
         },
       ],
     });

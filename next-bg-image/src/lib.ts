@@ -13,7 +13,8 @@ export default function getImageData(
       decls: [
         {
           url: fullSizeSrc,
-          type: `unbounded`,
+          min: 0,
+          max: Infinity,
         },
       ],
       blurry: lazyLoad ? `${baseUrl}&w=16&q=25` : undefined,
@@ -21,21 +22,21 @@ export default function getImageData(
   }
 
   const decls: Array<CssDecl> = [];
-  let biggestWidth = 0;
+  let previousMax = -1;
   for (const imgWidth of IMG_SIZES) {
     if (imgWidth >= 384 && imgWidth <= width) {
-      biggestWidth = imgWidth;
       decls.push({
         url: `${baseUrl}&w=${imgWidth}&q=75`,
-        type: `max-width`,
-        width: imgWidth,
+        min: previousMax + 1,
+        max: imgWidth,
       });
+      previousMax = imgWidth;
     }
   }
   decls.push({
     url: fullSizeSrc,
-    type: `min-width`,
-    width: biggestWidth + 1,
+    min: previousMax + 1,
+    max: Infinity,
   });
   return {
     decls,
@@ -43,11 +44,7 @@ export default function getImageData(
   };
 }
 
-export type CssDecl = { url: string } & (
-  | { type: "unbounded" }
-  | { type: "min-width"; width: number }
-  | { type: "max-width"; width: number }
-);
+export type CssDecl = { url: string; min: number; max: number };
 
 const IMG_SIZES = [
   16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048,
@@ -60,13 +57,14 @@ export function generateMediaQuery(
   lazyLoad: boolean,
 ): string {
   const selector = lazyLoad ? `#${id}.loaded::after` : `#${id}`;
-  switch (decl.type) {
-    case `unbounded`:
-      return `${selector} { background-image: url(${decl.url}); }`;
-    case `min-width`:
-      return `@media (min-width: ${decl.width}px) { ${selector} { background-image: url(${decl.url}); } }`;
-    case `max-width`:
-      return `@media (max-width: ${decl.width}px) { ${selector} { background-image: url(${decl.url}); } }`;
+  if (decl.min === 0 && decl.max === Infinity) {
+    return `${selector} { background-image: url(${decl.url}); }`;
+  }
+  switch (decl.max) {
+    case Infinity:
+      return `@media (min-width: ${decl.min}px) { ${selector} { background-image: url(${decl.url}); } }`;
+    default:
+      return `@media (max-width: ${decl.max}px) { ${selector} { background-image: url(${decl.url}); } }`;
   }
 }
 
