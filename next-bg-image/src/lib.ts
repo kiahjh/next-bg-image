@@ -55,7 +55,9 @@ export function generateMediaQuery(
   decl: CssDecl,
   id: string,
   lazyLoad: boolean,
+  initialWindowWidth: number | null,
 ): string {
+  if (initialWindowWidth && decl.max < initialWindowWidth) return ``;
   const selector = lazyLoad ? `#${id}.loaded::after` : `#${id}`;
   if (decl.min === 0 && decl.max === Infinity) {
     return `${selector} { background-image: url(${decl.url}); }`;

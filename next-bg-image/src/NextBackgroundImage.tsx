@@ -53,6 +53,9 @@ const NextBackgroundImage: React.FC<Props> = ({
   });
 
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [initialWindowWidth, setInitialWindowWidth] = useState<number | null>(
+    null,
+  );
 
   useEffect(() => {
     if (intersected) {
@@ -69,13 +72,20 @@ const NextBackgroundImage: React.FC<Props> = ({
     }
   }, [intersected, decls]);
 
+  useEffect(() => {
+    setInitialWindowWidth(window.innerWidth);
+  }, []);
+
   return (
     <>
       <style
         dangerouslySetInnerHTML={{
           __html:
             decls
-              .map((decl) => generateMediaQuery(decl, id, lazyLoad))
+              .reverse()
+              .map((decl) =>
+                generateMediaQuery(decl, id, lazyLoad, initialWindowWidth),
+              )
               .join(`\n`) + lazyCss(blurry, id, position, size),
         }}
       />
