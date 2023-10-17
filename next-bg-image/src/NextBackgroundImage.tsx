@@ -11,6 +11,7 @@ interface Props {
   src: StaticImageData;
   children: React.ReactNode;
   lazyLoad?: boolean;
+  lazyThreshold?: number | string;
   size?: "cover" | "contain" | "full"; // TODO: add custom stuff
   position?: "center" | "top" | "bottom" | "left" | "right"; // TODO: add custom stuff
   className?: string;
@@ -21,6 +22,7 @@ const NextBackgroundImage: React.FC<Props> = ({
   children,
   className,
   lazyLoad = false,
+  lazyThreshold = 500,
   size = `cover`,
   position = `center`,
 }) => {
@@ -42,11 +44,11 @@ const NextBackgroundImage: React.FC<Props> = ({
   /*
    *  next two steps that seem obvious to jared:
    *   1. tweak props for customizable rootMargin
-   *   2. the beefier task: don't unblur until image is fully loaded
    *
    * */
   const { intersected, ref } = useIntersectionObserver(lazyLoad, {
-    rootMargin: `500px`,
+    rootMargin:
+      typeof lazyThreshold === `string` ? lazyThreshold : `${lazyThreshold}px`,
     threshold: 0,
   });
 
