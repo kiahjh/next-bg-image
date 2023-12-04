@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { NextBackgroundImage } from "@friends-library/next-bg-image";
+import NextBackgroundImage from "@friends-library/next-bg-image";
 import Win from "@/public/win.jpeg";
 
 export default function Home() {

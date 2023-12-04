@@ -1,1 +1,3 @@
-export { default as NextBackgroundImage } from './NextBackgroundImage';
+import NextBgImage from "./NextBackgroundImage";
+
+export default NextBgImage;

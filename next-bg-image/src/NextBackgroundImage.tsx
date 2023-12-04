@@ -28,14 +28,6 @@ const NextBackgroundImage: React.FC<Props> = ({
   const src = Array.isArray(srcProp) ? srcProp : [srcProp];
 
   const id = useId().replace(/:/g, ``);
-  /* const imageProps = unstable_getImgProps({ */
-  /*   src, */
-  /*   alt: ``, */
-  /*   sizes: `hello`, */
-  /*   width: src.width, */
-  /*   height: src.height, */
-  /*   placeholder: `blur`, */
-  /* }); */
   const { decls, blurry } = getImageData(src, lazyLoad);
 
   const { intersected, ref } = useIntersectionObserver(lazyLoad, {
