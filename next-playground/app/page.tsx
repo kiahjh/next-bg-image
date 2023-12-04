@@ -7,9 +7,14 @@ export default function Home() {
     <main className="bg-black flex flex-col pb-80">
       <div className="h-[200vh]"></div>
       <NextBackgroundImage
-        src={Win}
+        src={[
+          `linear-gradient(to right, red, transparent)`,
+          `linear-gradient(to bottom, black, transparent)`,
+          Win,
+        ]}
         className="p-20 text-white"
         position="bottom"
+        lazyLoad
       >
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel velit
         itaque mollitia ut ducimus totam numquam, veniam, repellat aperiam harum

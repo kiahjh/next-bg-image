@@ -1,14 +1,13 @@
 "use client";
 
 import React, { useEffect, useId, useState } from "react";
-import { unstable_getImgProps } from "next/image";
 import type { StaticImageData } from "next/image";
 import getImageData, { generateMediaQuery, lazyCss } from "./lib";
 import "./next-bg-image.css";
 import { useIntersectionObserver } from "./hooks";
 
 interface Props {
-  src: StaticImageData;
+  src: StaticImageData | Array<StaticImageData | string>;
   children: React.ReactNode;
   lazyLoad?: boolean;
   lazyThreshold?: number | string;
@@ -18,7 +17,7 @@ interface Props {
 }
 
 const NextBackgroundImage: React.FC<Props> = ({
-  src,
+  src: srcProp,
   children,
   className,
   lazyLoad = false,
@@ -26,26 +25,19 @@ const NextBackgroundImage: React.FC<Props> = ({
   size = `cover`,
   position = `center`,
 }) => {
+  const src = Array.isArray(srcProp) ? srcProp : [srcProp];
+
   const id = useId().replace(/:/g, ``);
-  const imageProps = unstable_getImgProps({
-    src,
-    alt: ``,
-    sizes: `hello`,
-    width: src.width,
-    height: src.height,
-    placeholder: `blur`,
-  });
-  const { decls, blurry } = getImageData(
-    imageProps.props.srcSet || ``,
-    src.width,
-    src.src,
-    lazyLoad,
-  );
-  /*
-   *  next two steps that seem obvious to jared:
-   *   1. tweak props for customizable rootMargin
-   *
-   * */
+  /* const imageProps = unstable_getImgProps({ */
+  /*   src, */
+  /*   alt: ``, */
+  /*   sizes: `hello`, */
+  /*   width: src.width, */
+  /*   height: src.height, */
+  /*   placeholder: `blur`, */
+  /* }); */
+  const { decls, blurry } = getImageData(src, lazyLoad);
+
   const { intersected, ref } = useIntersectionObserver(lazyLoad, {
     rootMargin:
       typeof lazyThreshold === `string` ? lazyThreshold : `${lazyThreshold}px`,
@@ -59,15 +51,27 @@ const NextBackgroundImage: React.FC<Props> = ({
 
   useEffect(() => {
     if (intersected) {
-      const img = new Image();
-      img.onload = () => setImageLoaded(true);
-      img.onerror = () => setImageLoaded(true);
-      const url = decls.find(
-        (decl) =>
-          decl.min <= window.innerWidth && decl.max >= window.innerWidth,
-      )?.url;
-      if (url) {
-        img.src = url;
+      const imgs = decls
+        .find(
+          (decl) =>
+            decl.min <= window.innerWidth && decl.max >= window.innerWidth,
+        )
+        ?.images.filter(
+          (img): img is { type: "url"; value: string } => img.type === `url`,
+        );
+      if (imgs) {
+        const promise: Promise<unknown[]> = Promise.all(
+          imgs.map(
+            (data) =>
+              new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(undefined);
+                img.onerror = () => resolve(undefined);
+                img.src = data.value;
+              }),
+          ),
+        );
+        promise.then(() => setImageLoaded(true));
       }
     }
   }, [intersected, decls]);
@@ -96,10 +100,9 @@ const NextBackgroundImage: React.FC<Props> = ({
           backgroundSize: size,
           backgroundPosition: position,
           position: `relative`,
-          // border: `8px solid red`,
         }}
         className={`next_bg_image__container ${
-          imageLoaded && `loaded`
+          imageLoaded ? `loaded` : ``
         } ${className}`}
       >
         {String(intersected)}
