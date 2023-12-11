@@ -2,6 +2,8 @@
 
 import React, { useEffect, useId, useState } from "react";
 import type { StaticImageData } from "next/image";
+import type { Rule } from "./lib";
+import { generateResponsiveRuleCSS } from "./lib";
 import getImageData, { generateMediaQuery, lazyCss } from "./lib";
 import "./next-bg-image.css";
 import { useIntersectionObserver } from "./hooks";
@@ -11,8 +13,8 @@ interface Props {
   children: React.ReactNode;
   lazyLoad?: boolean;
   lazyThreshold?: number | string;
-  size?: "cover" | "contain" | "full"; // TODO: add custom stuff
-  position?: "center" | "top" | "bottom" | "left" | "right"; // TODO: add custom stuff
+  size?: Rule;
+  position?: Rule;
   className?: string;
 }
 
@@ -82,22 +84,22 @@ const NextBackgroundImage: React.FC<Props> = ({
               .map((decl) =>
                 generateMediaQuery(decl, id, lazyLoad, initialWindowWidth),
               )
-              .join(`\n`) + lazyCss(blurry, id, position, size),
+              .join(`\n`) +
+            /* lazyCss(blurry, id, position, size) + */
+            generateResponsiveRuleCSS(`size`, size, id) +
+            generateResponsiveRuleCSS(`position`, position, id),
         }}
       />
       <div
         ref={ref}
         id={id}
         style={{
-          backgroundSize: size,
-          backgroundPosition: position,
           position: `relative`,
         }}
         className={`next_bg_image__container ${
           imageLoaded ? `loaded` : ``
         } ${className}`}
       >
-        {String(intersected)}
         {children}
       </div>
     </>

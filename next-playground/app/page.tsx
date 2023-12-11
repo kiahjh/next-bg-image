@@ -1,20 +1,20 @@
-import Image from "next/image";
 import NextBackgroundImage from "@friends-library/next-bg-image";
 import Win from "@/public/win.jpeg";
 
-export default function Home() {
+export default function Home(): any {
   return (
-    <main className="bg-black flex flex-col pb-80">
-      <div className="h-[200vh]"></div>
+    <main className="">
       <NextBackgroundImage
         src={[
           `linear-gradient(to right, red, transparent)`,
           `linear-gradient(to bottom, black, transparent)`,
           Win,
         ]}
-        className="p-20 text-white"
-        position="bottom"
-        lazyLoad
+        className="w-screen h-[100vw]"
+        size={{
+          default: `cover`,
+          md: `100px`,
+        }}
       >
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel velit
         itaque mollitia ut ducimus totam numquam, veniam, repellat aperiam harum

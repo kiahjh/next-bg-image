@@ -126,3 +126,45 @@ export function lazyCss(
     }
 `;
 }
+
+export type TWSize = "sm" | "md" | "lg" | "xl" | "2xl";
+export type Rule =
+  | string
+  | ({
+      [key in TWSize]?: string;
+    } & {
+      [key in number]: string;
+    } & { default: string });
+
+export function generateResponsiveRuleCSS(
+  type: "size" | "position",
+  rule: Rule,
+  id: string,
+): string {
+  if (typeof rule === `string`) {
+    return `#${id} { background-${type}: ${rule}; }`;
+  }
+  return Object.entries(rule).reduce((acc, [key, value]) => {
+    const number = sizeToNumber(key);
+    if (!number) return acc;
+    return `${acc}\n@media (min-width: ${number}px) { #${id} { background-${type}: ${value}; } }`;
+  }, `#${id} { background-${type}: ${rule.default}; }`);
+}
+
+function sizeToNumber(size: string): number | null {
+  switch (size) {
+    case `sm`:
+      return 640;
+    case `md`:
+      return 768;
+    case `lg`:
+      return 1024;
+    case `xl`:
+      return 1280;
+    case `2xl`:
+      return 1536;
+    default:
+      if (isNaN(Number(size))) return null;
+      return Number(size);
+  }
+}
