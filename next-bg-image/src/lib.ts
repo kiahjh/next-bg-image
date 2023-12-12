@@ -89,7 +89,7 @@ export function generateMediaQuery(
   initialWindowWidth: number | null,
 ): string {
   if (initialWindowWidth && decl.max < initialWindowWidth) return ``;
-  const selector = lazyLoad ? `#${id}.loaded::after` : `#${id}`;
+  const selector = lazyLoad ? `.${id}.loaded::after` : `.${id}`;
   const bgImageValue = decl.images
     .map((image) => (image.type === `url` ? `url(${image.value})` : image.value))
     .join(`, `);
@@ -112,7 +112,7 @@ export function lazyCss(
 ): string {
   if (!blurry) return ``;
   return `
-    #${id}::before {
+    .${id}::before {
       background-image: ${blurry.join(`, `)};
     }
     ${generateResponsiveRuleCSS(`position`, position, id, `::before`)}
@@ -137,7 +137,7 @@ export function generateResponsiveRuleCSS(
   id: string,
   pseudoSelector?: '::before' | '::after',
 ): string {
-  const selector = `#${id}${pseudoSelector ?? ``}`;
+  const selector = `.${id}${pseudoSelector ?? ``}`;
   if (typeof rule === `string`) {
     return `${selector} { background-${type}: ${rule}; }`;
   }

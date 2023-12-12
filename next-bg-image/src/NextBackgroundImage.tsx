@@ -70,6 +70,7 @@ const NextBackgroundImage: React.FC<Props> = ({
   return (
     <>
       <style
+        id={`${id}_style`}
         dangerouslySetInnerHTML={{
           __html:
             decls
@@ -84,9 +85,10 @@ const NextBackgroundImage: React.FC<Props> = ({
       />
       <div
         ref={ref}
-        id={id}
         style={{ position: `relative` }}
-        className={`__nbgi_wrap${imageLoaded ? ` loaded` : ``} ${className}`}
+        className={`${id} __nbgi_wrap${imageLoaded ? ` loaded` : ``}${
+          className ? ` ${className}` : ``
+        }`}
       >
         {children}
       </div>

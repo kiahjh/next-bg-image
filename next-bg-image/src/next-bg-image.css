@@ -24,7 +24,7 @@
   opacity: 100%;
   z-index: -1000;
   opacity: 0;
-  transition: 500ms opacity ease-out;
+  transition: 250ms opacity ease-out;
 }
 
 .__nbgi_wrap.loaded::after {
