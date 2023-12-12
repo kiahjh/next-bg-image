@@ -137,16 +137,15 @@ export function generateResponsiveRuleCSS(
   id: string,
   pseudoSelector?: '::before' | '::after',
 ): string {
+  const selector = `#${id}${pseudoSelector ?? ``}`;
   if (typeof rule === `string`) {
-    return `#${id} { background-${type}: ${rule}; }`;
+    return `${selector} { background-${type}: ${rule}; }`;
   }
   return Object.entries(rule).reduce((acc, [key, value]) => {
     const number = sizeToNumber(key);
     if (!number) return acc;
-    return `${acc}\n@media (min-width: ${number}px) { #${id}${
-      pseudoSelector ?? ``
-    } { background-${type}: ${value}; } }`;
-  }, `#${id}${pseudoSelector ?? ``} { background-${type}: ${rule.default}; }`);
+    return `${acc}\n@media (min-width: ${number}px) { ${selector} { background-${type}: ${value}; } }`;
+  }, `${selector} { background-${type}: ${rule.default}; }`);
 }
 
 function sizeToNumber(size: string): number | null {

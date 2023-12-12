@@ -12,7 +12,7 @@ export default function Home(): any {
           default: `cover`,
           md: `100px auto`,
         }}
-        lazyLoad={true}
+        lazyLoad={false}
       >
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel velit itaque mollitia
         ut ducimus totam numquam, veniam, repellat aperiam harum odio deserunt! Ab, qui

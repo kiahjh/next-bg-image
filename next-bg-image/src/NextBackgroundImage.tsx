@@ -28,8 +28,7 @@ const NextBackgroundImage: React.FC<Props> = ({
   position = `center`,
 }) => {
   const src = Array.isArray(srcProp) ? srcProp : [srcProp];
-
-  const id = useId().replace(/:/g, ``);
+  const id = `__nbgi_` + useId().replace(/:/g, ``);
   const { decls, blurry } = getImageData(src, lazyLoad);
 
   const { intersected, ref } = useIntersectionObserver(lazyLoad, {
@@ -50,12 +49,12 @@ const NextBackgroundImage: React.FC<Props> = ({
       if (imgs) {
         const promise: Promise<unknown[]> = Promise.all(
           imgs.map(
-            (data) =>
+            ({ value: url }) =>
               new Promise((resolve) => {
                 const img = new Image();
                 img.onload = () => resolve(undefined);
                 img.onerror = () => resolve(undefined);
-                img.src = data.value;
+                img.src = url;
               }),
           ),
         );
@@ -86,10 +85,8 @@ const NextBackgroundImage: React.FC<Props> = ({
       <div
         ref={ref}
         id={id}
-        style={{
-          position: `relative`,
-        }}
-        className={`next_bg_image__container ${imageLoaded ? `loaded` : ``} ${className}`}
+        style={{ position: `relative` }}
+        className={`__nbgi_wrap${imageLoaded ? ` loaded` : ``} ${className}`}
       >
         {children}
       </div>

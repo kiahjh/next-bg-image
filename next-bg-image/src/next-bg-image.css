@@ -1,5 +1,5 @@
-.next_bg_image__container::before {
-  content: "";
+.__nbgi_wrap::before {
+  content: '';
   position: absolute;
   left: 0;
   top: 0;
@@ -10,12 +10,12 @@
   filter: blur(4px);
 }
 
-.next_bg_image__container.loaded::before {
+.__nbgi_wrap.loaded::before {
   filter: none;
 }
 
-.next_bg_image__container::after {
-  content: "";
+.__nbgi_wrap::after {
+  content: '';
   position: absolute;
   left: 0;
   top: 0;
@@ -27,10 +27,10 @@
   transition: 500ms opacity ease-out;
 }
 
-.next_bg_image__container.loaded::after {
+.__nbgi_wrap.loaded::after {
   opacity: 100%;
 }
 
-.next_bg_image__container {
+.__nbgi_wrap {
   z-index: 0;
 }
