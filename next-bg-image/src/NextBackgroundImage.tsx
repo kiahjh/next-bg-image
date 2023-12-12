@@ -85,7 +85,7 @@ const NextBackgroundImage: React.FC<Props> = ({
                 generateMediaQuery(decl, id, lazyLoad, initialWindowWidth),
               )
               .join(`\n`) +
-            /* lazyCss(blurry, id, position, size) + */
+            lazyCss(blurry, id, position, size) +
             generateResponsiveRuleCSS(`size`, size, id) +
             generateResponsiveRuleCSS(`position`, position, id),
         }}

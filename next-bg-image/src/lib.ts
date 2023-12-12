@@ -110,20 +110,18 @@ export function generateMediaQuery(
 export function lazyCss(
   blurry: string[] | undefined,
   id: string,
-  position: string,
-  size: string,
+  position: Rule,
+  size: Rule,
 ): string {
   if (!blurry) return ``;
   return `
     #${id}::before {
       background-image: ${blurry.join(`, `)};
-      background-size: ${size};
-      background-position: ${position};
     }
-    #${id}::after {
-      background-size: ${size};
-      background-position: ${position};
-    }
+    ${generateResponsiveRuleCSS(`position`, position, id, `::before`)}
+    ${generateResponsiveRuleCSS(`size`, size, id, `::before`)}
+    ${generateResponsiveRuleCSS(`position`, position, id, `::after`)}
+    ${generateResponsiveRuleCSS(`size`, size, id, `::after`)}
 `;
 }
 
@@ -140,15 +138,21 @@ export function generateResponsiveRuleCSS(
   type: "size" | "position",
   rule: Rule,
   id: string,
+  pseudoSelector?: "::before" | "::after",
 ): string {
   if (typeof rule === `string`) {
     return `#${id} { background-${type}: ${rule}; }`;
   }
-  return Object.entries(rule).reduce((acc, [key, value]) => {
-    const number = sizeToNumber(key);
-    if (!number) return acc;
-    return `${acc}\n@media (min-width: ${number}px) { #${id} { background-${type}: ${value}; } }`;
-  }, `#${id} { background-${type}: ${rule.default}; }`);
+  return Object.entries(rule).reduce(
+    (acc, [key, value]) => {
+      const number = sizeToNumber(key);
+      if (!number) return acc;
+      return `${acc}\n@media (min-width: ${number}px) { #${id}${
+        pseudoSelector ?? ``
+      } { background-${type}: ${value}; } }`;
+    },
+    `#${id}${pseudoSelector ?? ``} { background-${type}: ${rule.default}; }`,
+  );
 }
 
 function sizeToNumber(size: string): number | null {
