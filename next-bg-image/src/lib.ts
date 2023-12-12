@@ -1,5 +1,5 @@
-import { unstable_getImgProps } from "next/image";
-import type { StaticImageData } from "next/image";
+import { unstable_getImgProps } from 'next/image';
+import type { StaticImageData } from 'next/image';
 
 export default function getImageData(
   inputImages: Array<{ src: string; width: number; height: number } | string>,
@@ -74,11 +74,10 @@ export type CssDecl = {
   max: number;
 };
 
-export type DeclImage = { type: "url" | "gradient"; value: string };
+export type DeclImage = { type: 'url' | 'gradient'; value: string };
 
 const IMG_SIZES = [
-  16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048,
-  3840,
+  16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840,
 ] as const;
 
 type ImgSize = (typeof IMG_SIZES)[number];
@@ -92,9 +91,7 @@ export function generateMediaQuery(
   if (initialWindowWidth && decl.max < initialWindowWidth) return ``;
   const selector = lazyLoad ? `#${id}.loaded::after` : `#${id}`;
   const bgImageValue = decl.images
-    .map((image) =>
-      image.type === `url` ? `url(${image.value})` : image.value,
-    )
+    .map((image) => (image.type === `url` ? `url(${image.value})` : image.value))
     .join(`, `);
   if (decl.min === 0 && decl.max === Infinity) {
     return `${selector} { background-image: ${bgImageValue}; }`;
@@ -125,7 +122,7 @@ export function lazyCss(
 `;
 }
 
-export type TWSize = "sm" | "md" | "lg" | "xl" | "2xl";
+export type TWSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 export type Rule =
   | string
   | ({
@@ -135,24 +132,21 @@ export type Rule =
     } & { default: string });
 
 export function generateResponsiveRuleCSS(
-  type: "size" | "position",
+  type: 'size' | 'position',
   rule: Rule,
   id: string,
-  pseudoSelector?: "::before" | "::after",
+  pseudoSelector?: '::before' | '::after',
 ): string {
   if (typeof rule === `string`) {
     return `#${id} { background-${type}: ${rule}; }`;
   }
-  return Object.entries(rule).reduce(
-    (acc, [key, value]) => {
-      const number = sizeToNumber(key);
-      if (!number) return acc;
-      return `${acc}\n@media (min-width: ${number}px) { #${id}${
-        pseudoSelector ?? ``
-      } { background-${type}: ${value}; } }`;
-    },
-    `#${id}${pseudoSelector ?? ``} { background-${type}: ${rule.default}; }`,
-  );
+  return Object.entries(rule).reduce((acc, [key, value]) => {
+    const number = sizeToNumber(key);
+    if (!number) return acc;
+    return `${acc}\n@media (min-width: ${number}px) { #${id}${
+      pseudoSelector ?? ``
+    } { background-${type}: ${value}; } }`;
+  }, `#${id}${pseudoSelector ?? ``} { background-${type}: ${rule.default}; }`);
 }
 
 function sizeToNumber(size: string): number | null {
