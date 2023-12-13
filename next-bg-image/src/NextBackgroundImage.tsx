@@ -5,7 +5,6 @@ import type { StaticImageData } from 'next/image';
 import type { Rule } from './lib';
 import { generateResponsiveRuleCSS } from './lib';
 import getImageData, { generateMediaQuery, lazyCss } from './lib';
-import './next-bg-image.css';
 import { useIntersectionObserver } from './hooks';
 
 interface Props {
@@ -97,3 +96,4 @@ const NextBackgroundImage: React.FC<Props> = ({
 };
 
 export default NextBackgroundImage;
+

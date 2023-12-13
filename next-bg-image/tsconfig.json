@@ -1,6 +1,14 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "jsx": "react-jsx"
-  }
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "rootDir": "./src",
+    "outDir": "./dist/esm",
+    "lib": ["ES2019", "DOM"],
+    "target": "ES2019",
+    "declaration": true,
+    "moduleResolution": "node"
+  },
+  "exclude": ["./dist", "**/*.spec.ts"]
 }

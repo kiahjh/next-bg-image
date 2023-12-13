@@ -1,3 +1,12 @@
+import React from 'react';
+
+const StaticCss: React.FC = () => (
+  <style id="__nbgi_static" dangerouslySetInnerHTML={{ __html: STATIC_CSS }} />
+);
+
+export default StaticCss;
+
+const STATIC_CSS = `
 .__nbgi_wrap::before {
   content: '';
   position: absolute;
@@ -7,7 +16,7 @@
   height: 100%;
   opacity: 100%;
   z-index: -1001;
-  filter: blur(4px);
+  filter: blur(3px);
 }
 
 .__nbgi_wrap.loaded::before {
@@ -34,3 +43,4 @@
 .__nbgi_wrap {
   z-index: 0;
 }
+`;
