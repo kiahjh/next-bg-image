@@ -1,4 +1,4 @@
-import NextBackgroundImage from '@friends-library/next-bg-image';
+import NextBackgroundImage from 'next-bg-image';
 import Win from '@/public/win.jpeg';
 import Transparent from '@/public/transparent.png';
 
