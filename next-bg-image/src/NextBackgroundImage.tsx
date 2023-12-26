@@ -51,6 +51,7 @@ type Props = {
   lazyThreshold?: number | string;
   size?: Rule;
   position?: Rule;
+  minImageWidth?: number;
 } & IntrinsicProps;
 
 const NextBackgroundImage: React.FC<Props> = ({
@@ -59,6 +60,7 @@ const NextBackgroundImage: React.FC<Props> = ({
   className,
   lazyLoad = false,
   lazyThreshold = 500,
+  minImageWidth,
   size = `cover`,
   position = `center`,
   as: Element = `div`,
@@ -66,7 +68,7 @@ const NextBackgroundImage: React.FC<Props> = ({
 }) => {
   const src = Array.isArray(srcProp) ? srcProp : [srcProp];
   const id = `__nbgi_` + useId().replace(/:/g, ``);
-  const { decls, blurry } = getImageData(src, lazyLoad);
+  const { decls, blurry } = getImageData(src, lazyLoad, minImageWidth ?? 384);
 
   const { intersected, ref } = useIntersectionObserver(lazyLoad, {
     rootMargin:
