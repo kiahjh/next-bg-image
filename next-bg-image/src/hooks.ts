@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 export function useIntersectionObserver(
   enabled: boolean,
   options: IntersectionObserverInit,
 ): {
   intersected: boolean;
-  ref: React.MutableRefObject<null>;
+  ref: React.MutableRefObject<HTMLElement | null>;
 } {
   const ref = useRef(null);
   const [intersected, setIntersected] = useState(false);
