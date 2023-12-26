@@ -1,8 +1,15 @@
 _default:
- @just --choose
+  @just --choose
 
 test:
- @pnpm --filter next-bg-image exec vitest
+  @pnpm --filter next-bg-image exec vitest
+
+build:
+  @rm -rf next-bg-image/dist
+  @pnpm --filter next-bg-image compile
+
+publish *FLAGS: build
+  @cd next-bg-image && npub {{FLAGS}}
 
 dev-playground:
- @pnpm --filter next-playground dev
+  @pnpm --filter next-playground dev

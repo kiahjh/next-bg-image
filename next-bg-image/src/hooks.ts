@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 export function useIntersectionObserver(
   enabled: boolean,
@@ -16,7 +16,6 @@ export function useIntersectionObserver(
     const observer = new IntersectionObserver(
       (entries, observer) => {
         entries.forEach((entry) => {
-          console.log(`intersected`);
           setIntersected(entry.isIntersecting);
           if (entry.isIntersecting) {
             observer.unobserve(entry.target);
