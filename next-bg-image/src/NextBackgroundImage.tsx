@@ -70,6 +70,8 @@ const NextBackgroundImage: React.FC<Props> = ({
   const id = `__nbgi_` + useId().replace(/:/g, ``);
   const { decls, blurry } = getImageData(src, lazyLoad, minImageWidth ?? 384);
 
+  const imageSize = (decls.find((decl) => decl.max === Infinity)?.min ?? 1) - 1;
+
   const { intersected, ref } = useIntersectionObserver(lazyLoad, {
     rootMargin:
       typeof lazyThreshold === `string` ? lazyThreshold : `${lazyThreshold}px`,
@@ -121,7 +123,13 @@ const NextBackgroundImage: React.FC<Props> = ({
             decls
               .reverse()
               .map((decl) =>
-                generateMediaQuery(decl, id, lazyLoad, initialWindowWidth),
+                generateMediaQuery(
+                  decl,
+                  id,
+                  lazyLoad,
+                  initialWindowWidth,
+                  (initialWindowWidth ?? 0) > imageSize,
+                ),
               )
               .join(`\n`) +
             (lazyLoad

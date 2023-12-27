@@ -89,6 +89,7 @@ export function generateMediaQuery(
   id: string,
   lazyLoad: boolean,
   initialWindowWidth: number | null,
+  initialWindowWidthIsLargerThanImage: boolean,
 ): string {
   if (initialWindowWidth && decl.max < initialWindowWidth) return ``;
   const selector = lazyLoad ? `.${id}.loaded::after` : `.${id}`;
@@ -102,7 +103,9 @@ export function generateMediaQuery(
   }
   switch (decl.max) {
     case Infinity:
-      return `@media (min-width: ${decl.min}px) { ${selector} { background-image: ${bgImageValue}; } }`;
+      return `@media (min-width: ${
+        initialWindowWidthIsLargerThanImage ? 0 : decl.min
+      }px) { ${selector} { background-image: ${bgImageValue}; } }`;
     default:
       return `@media (max-width: ${decl.max}px) { ${selector} { background-image: ${bgImageValue}; } }`;
   }
