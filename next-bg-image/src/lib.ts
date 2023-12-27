@@ -1,9 +1,10 @@
-import { unstable_getImgProps } from 'next/image';
-import type { StaticImageData } from 'next/image';
+import { unstable_getImgProps } from "next/image";
+import type { StaticImageData } from "next/image";
 
 export default function getImageData(
   inputImages: Array<{ src: string; width: number; height: number } | string>,
   lazyLoad: boolean,
+  minImageWidth: number,
 ): { decls: Array<CssDecl>; blurry?: string[] } {
   const decls: Array<CssDecl> = [];
   let previousMax = -1;
@@ -35,7 +36,7 @@ export default function getImageData(
     return imgQualityMap;
   });
   for (const imageWidth of IMG_SIZES.filter(
-    (size) => size >= 384 && size < largestImage,
+    (size) => size >= minImageWidth && size < largestImage,
   )) {
     const curDeclImages: DeclImage[] = [];
     for (const image of images) {
@@ -74,10 +75,11 @@ export type CssDecl = {
   max: number;
 };
 
-export type DeclImage = { type: 'url' | 'gradient'; value: string };
+export type DeclImage = { type: "url" | "gradient"; value: string };
 
 const IMG_SIZES = [
-  16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840,
+  16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048,
+  3840,
 ] as const;
 
 type ImgSize = (typeof IMG_SIZES)[number];
@@ -87,18 +89,23 @@ export function generateMediaQuery(
   id: string,
   lazyLoad: boolean,
   initialWindowWidth: number | null,
+  initialWindowWidthIsLargerThanImage: boolean,
 ): string {
   if (initialWindowWidth && decl.max < initialWindowWidth) return ``;
   const selector = lazyLoad ? `.${id}.loaded::after` : `.${id}`;
   const bgImageValue = decl.images
-    .map((image) => (image.type === `url` ? `url(${image.value})` : image.value))
+    .map((image) =>
+      image.type === `url` ? `url(${image.value})` : image.value,
+    )
     .join(`, `);
   if (decl.min === 0 && decl.max === Infinity) {
     return `${selector} { background-image: ${bgImageValue}; }`;
   }
   switch (decl.max) {
     case Infinity:
-      return `@media (min-width: ${decl.min}px) { ${selector} { background-image: ${bgImageValue}; } }`;
+      return `@media (min-width: ${
+        initialWindowWidthIsLargerThanImage ? 0 : decl.min
+      }px) { ${selector} { background-image: ${bgImageValue}; } }`;
     default:
       return `@media (max-width: ${decl.max}px) { ${selector} { background-image: ${bgImageValue}; } }`;
   }
@@ -122,7 +129,7 @@ export function lazyCss(
 `;
 }
 
-export type TWSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type TWSize = "sm" | "md" | "lg" | "xl" | "2xl";
 export type Rule =
   | string
   | ({
@@ -132,10 +139,10 @@ export type Rule =
     } & { default: string });
 
 export function generateResponsiveRuleCSS(
-  type: 'size' | 'position',
+  type: "size" | "position",
   rule: Rule,
   id: string,
-  pseudoSelector?: '::before' | '::after',
+  pseudoSelector?: "::before" | "::after",
 ): string {
   const selector = `.${id}${pseudoSelector ?? ``}`;
   if (typeof rule === `string`) {
