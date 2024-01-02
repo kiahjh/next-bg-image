@@ -46,7 +46,7 @@ type IntrinsicProps =
 
 type Props = {
   src: StaticImageData | Array<StaticImageData | string>;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   lazyLoad?: boolean;
   lazyThreshold?: number | string;
   size?: Rule;
