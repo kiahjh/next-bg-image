@@ -172,3 +172,18 @@ function sizeToNumber(size: string): number | null {
       return Number(size);
   }
 }
+
+type SizedImage = Array<{ url: string; min: number; max: number }>;
+
+export function declsToImages(decls: CssDecl[]): Array<SizedImage> {
+  const images: Array<SizedImage> = [];
+  for (const decl of decls) {
+    for (let i = 0; i < decl.images.length; i++) {
+      const image = decl.images[i];
+      if (!image || image.type !== `url`) continue;
+      if (!images[i]) images[i] = [];
+      images[i]?.push({ url: image.value, min: decl.min, max: decl.max });
+    }
+  }
+  return images.filter((image) => image);
+}

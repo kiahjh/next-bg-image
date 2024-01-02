@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useEffect, useId, useState } from "react";
+import Image from "next/image";
 import type { StaticImageData } from "next/image";
 import type { Rule } from "./lib";
+import { declsToImages } from "./lib";
 import { generateResponsiveRuleCSS } from "./lib";
 import getImageData, { generateMediaQuery, lazyCss } from "./lib";
 import { useIntersectionObserver } from "./hooks";
@@ -69,6 +71,13 @@ const NextBackgroundImage: React.FC<Props> = ({
   const src = Array.isArray(srcProp) ? srcProp : [srcProp];
   const id = `__nbgi_` + useId().replace(/:/g, ``);
   const { decls, blurry } = getImageData(src, lazyLoad, minImageWidth ?? 384);
+
+  const sizedImages = declsToImages(decls);
+  const srcSets: string[] = [];
+
+  for (const sizedImage of sizedImages) {
+    srcSets.push(sizedImage.map((img) => `${img.url} ${img.max}w`).join(`, `));
+  }
 
   const imageSize = (decls.find((decl) => decl.max === Infinity)?.min ?? 1) - 1;
 
@@ -138,18 +147,37 @@ const NextBackgroundImage: React.FC<Props> = ({
                 generateResponsiveRuleCSS(`position`, position, id)),
         }}
       />
+      {srcSets.map((srcSet, i) => (
+        <img
+          srcSet={srcSet}
+          alt=""
+          // @ts-ignore
+          fetchpriority="high"
+          style={{
+            width: `100vw`,
+            // display: `inline-block`,
+            // position: `absolute`,
+            // overflow: `hidden`,
+            // clip: `rect(0 0 0 0)`,
+            height: 0,
+            // margin: -1,
+            // padding: 0,
+            // border: 0,
+          }}
+        />
+      ))}
       {/* @ts-ignore */}
-      <Element
-        // @ts-ignore
-        ref={ref}
-        style={{ position: `relative` }}
-        className={`${id} __nbgi_wrap${imageLoaded ? ` loaded` : ``}${
-          className ? ` ${className}` : ``
-        }`}
-        {...props}
-      >
-        {children}
-      </Element>
+      {/* <Element */}
+      {/*   // @ts-ignore */}
+      {/*   ref={ref} */}
+      {/*   style={{ position: `relative` }} */}
+      {/*   className={`${id} __nbgi_wrap${imageLoaded ? ` loaded` : ``}${ */}
+      {/*     className ? ` ${className}` : `` */}
+      {/*   }`} */}
+      {/*   {...props} */}
+      {/* > */}
+      {/*   {children} */}
+      {/* </Element> */}
     </>
   );
 };
