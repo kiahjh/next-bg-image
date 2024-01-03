@@ -7,7 +7,12 @@ const StaticCss: React.FC = () => (
 export default StaticCss;
 
 const STATIC_CSS = `
-.__nbgi_wrap::before {
+.__nbgi_lazy {
+  position: relative;
+  z-index: 0;
+}
+
+.__nbgi_lazy::before {
   content: '';
   position: absolute;
   left: 0;
@@ -16,14 +21,9 @@ const STATIC_CSS = `
   height: 100%;
   opacity: 100%;
   z-index: -1001;
-  filter: blur(3px);
 }
 
-.__nbgi_wrap.loaded::before {
-  filter: none;
-}
-
-.__nbgi_wrap::after {
+.__nbgi_lazy:after {
   content: '';
   position: absolute;
   left: 0;
@@ -33,14 +33,10 @@ const STATIC_CSS = `
   opacity: 100%;
   z-index: -1000;
   opacity: 0;
-  transition: 250ms opacity ease-out;
+  transition: 200ms opacity ease-out;
 }
 
-.__nbgi_wrap.loaded::after {
+.__nbgi_loaded::after {
   opacity: 100%;
-}
-
-.__nbgi_wrap {
-  z-index: 0;
 }
 `;

@@ -4,6 +4,9 @@ _default:
 test:
   @pnpm --filter next-bg-image exec vitest
 
+check: build
+  @pnpm --filter next-bg-image exec vitest run
+
 build:
   @rm -rf next-bg-image/dist
   @pnpm --filter next-bg-image compile
