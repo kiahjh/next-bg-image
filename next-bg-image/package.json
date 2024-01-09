@@ -1,6 +1,6 @@
 {
   "name": "next-bg-image",
-  "version": "0.1.0-beta.9",
+  "version": "0.1.0-beta.11",
   "description": "",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -16,7 +16,7 @@
     "compile": "pnpm run compile:esm && npm run compile:cjs",
     "compile:esm": "pnpm tsc",
     "compile:cjs": "pnpm tsc --project tsconfig.cjs.json",
-    "npub:precheck": "true"
+    "npub:precheck": "just check"
   },
   "keywords": [],
   "author": "",
