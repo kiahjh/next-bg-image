@@ -5,6 +5,10 @@
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "main": "dist/cjs/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kiahjh/next-bg-image.git"
+  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
