@@ -6,9 +6,7 @@ export default function Home(): any {
   return (
     <main className="">
       <NextBackgroundImage
-        _renderDebugCss
         src={[AcmeLogo, `linear-gradient(rgba(0,0,0,0), rgba(0,155,0,0.9))`, PineTrees]}
-        // src={PineTrees}
         lazyLoad={true}
         className="w-screen h-[50vh] text-3xl font-bold text-white p-10 flex flex-col justify-end"
       >

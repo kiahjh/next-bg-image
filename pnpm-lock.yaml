@@ -6,11 +6,9 @@ settings:
 
 importers:
 
+  .: {}
+
   next-bg-image:
-    dependencies:
-      react:
-        specifier: ^18.0.0
-        version: 18.2.0
     devDependencies:
       '@types/react':
         specifier: 18.2.15
@@ -21,6 +19,9 @@ importers:
       next:
         specifier: ^13.0.0
         version: 13.4.10(react-dom@18.2.0)(react@18.2.0)
+      react:
+        specifier: ^18.0.0
+        version: 18.2.0
       react-dom:
         specifier: ^18.0.0
         version: 18.2.0(react@18.2.0)
@@ -45,9 +46,6 @@ importers:
       next:
         specifier: 13.4.10
         version: 13.4.10(react-dom@18.2.0)(react@18.2.0)
-      next-bg-image:
-        specifier: workspace:^1.0.0
-        version: link:../next-bg-image
       postcss:
         specifier: 8.4.26
         version: 8.4.26
