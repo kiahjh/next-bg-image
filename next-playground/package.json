@@ -1,5 +1,5 @@
 {
-  "name": "@friends-library/next-playground",
+  "name": "next-bg-image-playground",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next-bg-image": "workspace:^1.0.0",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
