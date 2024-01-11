@@ -7,8 +7,5 @@
     "url": "https://github.com/kiahjh/next-bg-image.git"
   },
   "homepage": "https://github.com/kiahjh/next-bg-image#readme",
-  "workspaces": [
-    "next-bg-image"
-  ],
   "packageManager": "pnpm@8.11.0"
 }

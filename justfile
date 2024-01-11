@@ -12,7 +12,9 @@ build:
   @pnpm --filter next-bg-image compile
 
 publish *FLAGS: build
+  @cp README.md next-bg-image/
   @cd next-bg-image && npub {{FLAGS}}
+  @rm next-bg-image/README.md
 
 dev-playground:
   @pnpm --filter next-playground dev

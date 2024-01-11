@@ -2,6 +2,5 @@
 node_modules/
 src/
 *.swp
-*.md
 tsconfig.json
 tsconfig.cjs.json
