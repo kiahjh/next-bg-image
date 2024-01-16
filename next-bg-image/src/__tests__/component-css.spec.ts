@@ -1,6 +1,6 @@
-import { vi, test, describe, expect } from 'vitest';
-import getCssData from '../lib';
-import { componentCss } from '../css';
+import { vi, test, describe, expect } from "vitest";
+import getCssData from "../lib";
+import { componentCss } from "../css";
 
 const cat = {
   src: `cat.jpg`,
@@ -27,8 +27,6 @@ describe(`component assembled css`, () => {
       /* range(min: 0, max: 384) removed after client load */
       .__nbgi_1 {
         background-size: cover;
-      }
-      .__nbgi_1 {
         background-position: center;
       }"
     `);
@@ -54,8 +52,6 @@ describe(`component assembled css`, () => {
       /* range(min: 0, max: 384) removed after client load */
       .__nbgi_1 {
         background-size: cover;
-      }
-      .__nbgi_1 {
         background-position: center;
       }"
     `);
@@ -82,15 +78,20 @@ describe(`component assembled css`, () => {
       }
       .__nbgi_1 {
         background-size: cover;
-      }
-      .__nbgi_1 {
         background-position: center;
       }"`);
   });
 
   test(`small img lazy server css`, () => {
     const data = getCssData([cat]);
-    const lazyCss = componentCss(`__nbgi_1`, data, true, `cover`, `center`, null);
+    const lazyCss = componentCss(
+      `__nbgi_1`,
+      data,
+      true,
+      `cover`,
+      `center`,
+      null,
+    );
     expect(lazyCss).toMatchInlineSnapshot(`
       "@media (min-width: 641px) {
         .__nbgi_1.__nbgi_loaded::after {
@@ -111,16 +112,131 @@ describe(`component assembled css`, () => {
         background-image: url(blurred-cat.jpg);
       }
       .__nbgi_1::before {
+        background-size: cover;
         background-position: center;
+      }
+      .__nbgi_1::after {
+        background-size: cover;
+        background-position: center;
+      }"
+    `);
+  });
+
+  test(`one string, one obj`, () => {
+    const data = getCssData([cat]);
+    const lazyCss = componentCss(
+      `__nbgi_1`,
+      data,
+      true,
+      `cover`,
+      {
+        base: `center`,
+        xl: `top left`,
+      },
+      null,
+    );
+    expect(lazyCss).toMatchInlineSnapshot(`
+      "@media (min-width: 641px) {
+        .__nbgi_1.__nbgi_loaded::after {
+          background-image: url(cat.jpg);
+        }
+      }
+      @media (max-width: 640px) {
+        .__nbgi_1.__nbgi_loaded::after {
+          background-image: url(downsized-cat.jpg?w=640);
+        }
+      }
+      @media (max-width: 384px) {
+        .__nbgi_1.__nbgi_loaded::after {
+          background-image: url(downsized-cat.jpg?w=384);
+        }
+      }
+      .__nbgi_1::before {
+        background-image: url(blurred-cat.jpg);
       }
       .__nbgi_1::before {
         background-size: cover;
-      }
-      .__nbgi_1::after {
         background-position: center;
+      }
+      @media (min-width: 1280px) {
+        .__nbgi_1::before {
+          background-position: top left;
+        }
       }
       .__nbgi_1::after {
         background-size: cover;
+        background-position: center;
+      }
+      @media (min-width: 1280px) {
+        .__nbgi_1::after {
+          background-position: top left;
+        }
+      }"
+    `);
+  });
+
+  test(`two objects`, () => {
+    const data = getCssData([cat]);
+    const lazyCss = componentCss(
+      `__nbgi_1`,
+      data,
+      true,
+      {
+        base: `cover`,
+        lg: `contain`,
+      },
+      {
+        base: `center`,
+        xl: `top left`,
+      },
+      null,
+    );
+    expect(lazyCss).toMatchInlineSnapshot(`
+      "@media (min-width: 641px) {
+        .__nbgi_1.__nbgi_loaded::after {
+          background-image: url(cat.jpg);
+        }
+      }
+      @media (max-width: 640px) {
+        .__nbgi_1.__nbgi_loaded::after {
+          background-image: url(downsized-cat.jpg?w=640);
+        }
+      }
+      @media (max-width: 384px) {
+        .__nbgi_1.__nbgi_loaded::after {
+          background-image: url(downsized-cat.jpg?w=384);
+        }
+      }
+      .__nbgi_1::before {
+        background-image: url(blurred-cat.jpg);
+      }
+      .__nbgi_1::before {
+        background-size: cover;
+        background-position: center;
+      }
+      @media (min-width: 1280px) {
+        .__nbgi_1::before {
+          background-position: top left;
+        }
+      }
+      @media (min-width: 1024px) {
+        .__nbgi_1::before {
+          background-size: contain;
+        }
+      }
+      .__nbgi_1::after {
+        background-size: cover;
+        background-position: center;
+      }
+      @media (min-width: 1280px) {
+        .__nbgi_1::after {
+          background-position: top left;
+        }
+      }
+      @media (min-width: 1024px) {
+        .__nbgi_1::after {
+          background-size: contain;
+        }
       }"
     `);
   });
@@ -128,7 +244,7 @@ describe(`component assembled css`, () => {
 
 vi.mock(`../nextjs.js`, async (importOriginal) => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-  const mod = { ...(await importOriginal<typeof import('../nextjs')>()) };
+  const mod = { ...(await importOriginal<typeof import("../nextjs")>()) };
   mod.imgBaseUrl = (img) => `downsized-${img.src}`;
   mod.sizedImg = (baseUrl, width) => `${baseUrl}?w=${width}`;
   mod.blurImgUrl = (_, img) => `blurred-${img.src}`;

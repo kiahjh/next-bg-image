@@ -1,5 +1,9 @@
-import type { BreakpointCustomizableCssRule, CssData, MediaQueryRange } from './types';
-import * as format from './format';
+import type {
+  BreakpointCustomizableCssRule,
+  CssData,
+  MediaQueryRange,
+} from "./types";
+import * as format from "./format";
 
 export function componentCss(
   id: string,
@@ -23,8 +27,7 @@ export function componentCss(
       .join(``) +
     (lazyLoad
       ? lazyCss(id, cssData.blurImageLayers, position, size)
-      : generateResponsiveRuleCSS(id, `size`, size) +
-        generateResponsiveRuleCSS(id, `position`, position))
+      : generateResponsiveRuleCSS(id, position, size))
   ).trim();
 }
 
@@ -46,7 +49,8 @@ export function generateMediaQuery(
     });
   }
 
-  const alreadyLoadedLargestImages = (initialClientWindowWidth ?? -1) > largestImageWidth;
+  const alreadyLoadedLargestImages =
+    (initialClientWindowWidth ?? -1) > largestImageWidth;
   if (range.min === 0 || alreadyLoadedLargestImages) {
     // one unbounded (no media query) rule is all that's needed
     return format.bgImageLayers(selector, range.imageLayers);
@@ -68,32 +72,79 @@ export function lazyCss(
   if (!blurredLayers) return ``;
   return [
     format.bgImageCss(`.${id}::before`, blurredLayers),
-    generateResponsiveRuleCSS(id, `position`, position, `::before`),
-    generateResponsiveRuleCSS(id, `size`, size, `::before`),
-    generateResponsiveRuleCSS(id, `position`, position, `::after`),
-    generateResponsiveRuleCSS(id, `size`, size, `::after`),
+    generateResponsiveRuleCSS(id, position, size, `::before`),
+    generateResponsiveRuleCSS(id, position, size, `::after`),
   ].join(``);
 }
 
 export function generateResponsiveRuleCSS(
   id: string,
-  type: 'size' | 'position',
-  rule: BreakpointCustomizableCssRule,
-  pseudoSelector?: '::before' | '::after',
+  position: BreakpointCustomizableCssRule,
+  size: BreakpointCustomizableCssRule,
+  pseudoSelector?: "::before" | "::after",
 ): string {
   const selector = `.${id}${pseudoSelector ?? ``}`;
-  if (typeof rule === `string`) {
-    return format.cssRule(selector, [[`background-${type}`, rule]]);
+  switch (true) {
+    case typeof position === `string` && typeof size === `string`:
+      return format.cssRule(selector, [
+        [`background-size`, size],
+        [`background-position`, position],
+      ]);
+    case typeof position === `object` && typeof size === `string`:
+      return customizedCssRule(
+        position,
+        selector,
+        `position`,
+        format.cssRule(selector, [
+          [`background-size`, size],
+          [`background-position`, position.base],
+        ]),
+      );
+    case typeof position === `string` && typeof size === `object`:
+      return customizedCssRule(
+        size,
+        selector,
+        `size`,
+        format.cssRule(selector, [
+          [`background-size`, size.base],
+          [`background-position`, position],
+        ]),
+      );
+    case typeof position === `object` && typeof size === `object`:
+      return customizedCssRule(
+        size,
+        selector,
+        `size`,
+        customizedCssRule(
+          position,
+          selector,
+          `position`,
+          format.cssRule(selector, [
+            [`background-size`, size.base],
+            [`background-position`, position.base],
+          ]),
+        ),
+      );
+    default:
+      return ``;
   }
+}
+
+function customizedCssRule(
+  rule: Exclude<BreakpointCustomizableCssRule, string>,
+  selector: string,
+  property: "size" | "position",
+  initialValue: string,
+): string {
   return Object.entries(rule).reduce((acc, [key, value]) => {
     const number = breakpointToNumber(key);
     if (!number) return acc;
-    const rule = format.cssRule(selector, [[`background-${type}`, value]], {
+    const rule = format.cssRule(selector, [[`background-${property}`, value]], {
       type: `min-width`,
       px: number,
     });
-    return `${acc}\n${rule}`;
-  }, format.cssRule(selector, [[`background-${type}`, rule.base]]));
+    return `${acc}${rule}`;
+  }, initialValue);
 }
 
 function breakpointToNumber(size: string): number | null {
