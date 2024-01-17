@@ -1,9 +1,9 @@
-import type { CssBgImageLayer } from './types';
+import type { CssBgImageLayer } from "./types";
 
 export function bgImageLayers(
   selector: string,
   imageLayers: Array<CssBgImageLayer>,
-  mediaQuery?: { type: 'min-width' | 'max-width'; px: number },
+  mediaQuery?: { type: "min-width" | "max-width"; px: number },
 ): string {
   return bgImageCss(
     selector,
@@ -17,7 +17,7 @@ export function bgImageLayers(
 export function bgImageCss(
   selector: string,
   images: string[],
-  mediaQuery?: { type: 'min-width' | 'max-width'; px: number },
+  mediaQuery?: { type: "min-width" | "max-width"; px: number },
 ): string {
   let value = images.join(mediaQuery ? `,\n      ` : `,\n    `);
   if (images.length > 1) {
@@ -29,10 +29,13 @@ export function bgImageCss(
 export function cssRule(
   selector: string,
   decls: Array<[property: string, value: string]>,
-  mediaQuery?: { type: 'min-width' | 'max-width'; px: number },
+  mediaQuery?: { type: "min-width" | "max-width"; px: number },
 ): string {
   const joinedDeclString = decls
-    .map(([property, val]) => `${property}:${val.startsWith(`\n`) ? val : ` ${val}`}`)
+    .map(
+      ([property, val]) =>
+        `${property}:${val.startsWith(`\n`) ? val : ` ${val}`}`,
+    )
     .join(mediaQuery ? `;\n      ` : `;\n  `);
   if (!mediaQuery) {
     return `${selector} {\n  ${joinedDeclString};\n}\n`;
