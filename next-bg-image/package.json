@@ -1,6 +1,6 @@
 {
   "name": "next-bg-image",
-  "version": "0.1.4-beta",
+  "version": "0.1.4",
   "description": "",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
