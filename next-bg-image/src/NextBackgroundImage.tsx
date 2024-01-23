@@ -16,6 +16,7 @@ type Props = {
   src: StaticImageData | Array<StaticImageData | CssGradientString>;
   children?: React.ReactNode;
   lazyLoad?: boolean;
+  eager?: boolean;
   lazyThreshold?: number | string;
   size?: BreakpointCustomizableCssRule;
   position?: BreakpointCustomizableCssRule;
@@ -27,6 +28,7 @@ const NextBackgroundImage: React.FC<Props> = ({
   children,
   className,
   lazyLoad = false,
+  eager: inputEager = false,
   lazyThreshold = 500,
   minImageWidth,
   size = `cover`,
@@ -38,6 +40,8 @@ const NextBackgroundImage: React.FC<Props> = ({
   const cssData = getCssData(layers, minImageWidth);
   const id = `__nbgi_` + useId().replace(/:/g, ``);
 
+  const srcSets = extract.preloadSrcSets(cssData.mediaQueryRanges);
+
   const { intersected, ref } = useIntersectionObserver(lazyLoad, {
     rootMargin: typeof lazyThreshold === `string` ? lazyThreshold : `${lazyThreshold}px`,
     threshold: 0,
@@ -45,6 +49,7 @@ const NextBackgroundImage: React.FC<Props> = ({
 
   const [imageLoaded, setImageLoaded] = useState(false);
   const [initialWindowWidth, setInitialWindowWidth] = useState<number | null>(null);
+  const [eager, setEager] = useState(inputEager);
 
   useEffect(() => {
     if (intersected) {
@@ -65,10 +70,31 @@ const NextBackgroundImage: React.FC<Props> = ({
 
   useEffect(() => {
     setInitialWindowWidth(window.innerWidth);
+    setEager(false);
   }, []);
 
   return (
     <>
+      {eager &&
+        srcSets.map((srcSet) => (
+          <img
+            key={srcSet}
+            srcSet={srcSet}
+            // @ts-ignore
+            fetchPriority="high"
+            alt=""
+            style={{
+              display: `inline-block`,
+              position: `absolute`,
+              overflow: `hidden`,
+              clip: `rect(0 0 0 0)`,
+              height: 1,
+              margin: -1,
+              padding: 0,
+              border: 0,
+            }}
+          />
+        ))}
       {/* @ts-ignore */}
       <Element
         // @ts-ignore

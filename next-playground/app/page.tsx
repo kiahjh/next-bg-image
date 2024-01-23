@@ -7,6 +7,9 @@ export default function Home(): any {
         <li>
           <Link href="/layered">Layered</Link>
         </li>
+        <li>
+          <Link href="/eager">Eager loading</Link>
+        </li>
       </ul>
     </main>
   );

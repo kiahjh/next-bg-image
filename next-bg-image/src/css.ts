@@ -1,9 +1,5 @@
-import type {
-  BreakpointCustomizableCssRule,
-  CssData,
-  MediaQueryRange,
-} from "./types";
-import * as format from "./format";
+import type { BreakpointCustomizableCssRule, CssData, MediaQueryRange } from './types';
+import * as format from './format';
 
 export function componentCss(
   id: string,
@@ -49,8 +45,7 @@ export function generateMediaQuery(
     });
   }
 
-  const alreadyLoadedLargestImages =
-    (initialClientWindowWidth ?? -1) > largestImageWidth;
+  const alreadyLoadedLargestImages = (initialClientWindowWidth ?? -1) > largestImageWidth;
   if (range.min === 0 || alreadyLoadedLargestImages) {
     // one unbounded (no media query) rule is all that's needed
     return format.bgImageLayers(selector, range.imageLayers);
@@ -81,7 +76,7 @@ export function generateResponsiveRuleCSS(
   id: string,
   position: BreakpointCustomizableCssRule,
   size: BreakpointCustomizableCssRule,
-  pseudoSelector?: "::before" | "::after",
+  pseudoSelector?: '::before' | '::after',
 ): string {
   const selector = `.${id}${pseudoSelector ?? ``}`;
   switch (true) {
@@ -133,7 +128,7 @@ export function generateResponsiveRuleCSS(
 function customizedCssRule(
   rule: Exclude<BreakpointCustomizableCssRule, string>,
   selector: string,
-  property: "size" | "position",
+  property: 'size' | 'position',
   initialValue: string,
 ): string {
   return Object.entries(rule).reduce((acc, [key, value]) => {
