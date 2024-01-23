@@ -1,9 +1,9 @@
-import React from "react";
-import { Space_Grotesk } from "next/font/google";
-import type { NextPage } from "next";
+import React from 'react';
+import { Space_Grotesk } from 'next/font/google';
+import type { NextPage } from 'next';
 
 const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"], // eslint-disable-line
+  subsets: ['latin'], // eslint-disable-line
 });
 
 const ImagePage: NextPage = () => (

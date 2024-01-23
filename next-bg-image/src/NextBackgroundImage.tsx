@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import React, { useEffect, useId, useState } from "react";
-import type { StaticImageData } from "next/image";
+import React, { useEffect, useId, useState } from 'react';
+import type { StaticImageData } from 'next/image';
 import type {
   IntrinsicProps,
   CssGradientString,
   BreakpointCustomizableCssRule,
-} from "./types";
-import { componentCss } from "./css";
-import getCssData from "./lib";
-import { useIntersectionObserver } from "./hooks";
-import * as extract from "./extract";
+} from './types';
+import { componentCss } from './css';
+import getCssData from './lib';
+import { useIntersectionObserver } from './hooks';
+import * as extract from './extract';
 
 type Props = {
   src: StaticImageData | Array<StaticImageData | CssGradientString>;
@@ -43,31 +43,26 @@ const NextBackgroundImage: React.FC<Props> = ({
   const srcSets = extract.preloadSrcSets(cssData.mediaQueryRanges);
 
   const { intersected, ref } = useIntersectionObserver(lazyLoad, {
-    rootMargin:
-      typeof lazyThreshold === `string` ? lazyThreshold : `${lazyThreshold}px`,
+    rootMargin: typeof lazyThreshold === `string` ? lazyThreshold : `${lazyThreshold}px`,
     threshold: 0,
   });
 
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [initialWindowWidth, setInitialWindowWidth] = useState<number | null>(
-    null,
-  );
+  const [initialWindowWidth, setInitialWindowWidth] = useState<number | null>(null);
   const [eager, setEager] = useState(inputEager);
 
   useEffect(() => {
     if (intersected) {
       const promise: Promise<unknown> = Promise.all(
-        extract
-          .imagesToPreload(cssData.mediaQueryRanges, window.innerWidth)
-          .map(
-            (url) =>
-              new Promise((resolve) => {
-                const img = new Image();
-                img.onload = resolve;
-                img.onerror = resolve;
-                img.src = url;
-              }),
-          ),
+        extract.imagesToPreload(cssData.mediaQueryRanges, window.innerWidth).map(
+          (url) =>
+            new Promise((resolve) => {
+              const img = new Image();
+              img.onload = resolve;
+              img.onerror = resolve;
+              img.src = url;
+            }),
+        ),
       );
       promise.then(() => setImageLoaded(true));
     }
@@ -119,14 +114,7 @@ const NextBackgroundImage: React.FC<Props> = ({
       <style
         id={`${id}_style`}
         dangerouslySetInnerHTML={{
-          __html: componentCss(
-            id,
-            cssData,
-            lazyLoad,
-            size,
-            position,
-            initialWindowWidth,
-          ),
+          __html: componentCss(id, cssData, lazyLoad, size, position, initialWindowWidth),
         }}
       />
     </>

@@ -1,6 +1,6 @@
-import { vi, test, describe, expect } from "vitest";
-import getCssData from "../lib";
-import { componentCss } from "../css";
+import { vi, test, describe, expect } from 'vitest';
+import getCssData from '../lib';
+import { componentCss } from '../css';
 
 const cat = {
   src: `cat.jpg`,
@@ -84,14 +84,7 @@ describe(`component assembled css`, () => {
 
   test(`small img lazy server css`, () => {
     const data = getCssData([cat]);
-    const lazyCss = componentCss(
-      `__nbgi_1`,
-      data,
-      true,
-      `cover`,
-      `center`,
-      null,
-    );
+    const lazyCss = componentCss(`__nbgi_1`, data, true, `cover`, `center`, null);
     expect(lazyCss).toMatchInlineSnapshot(`
       "@media (min-width: 641px) {
         .__nbgi_1.__nbgi_loaded::after {
@@ -244,7 +237,7 @@ describe(`component assembled css`, () => {
 
 vi.mock(`../nextjs.js`, async (importOriginal) => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-  const mod = { ...(await importOriginal<typeof import("../nextjs")>()) };
+  const mod = { ...(await importOriginal<typeof import('../nextjs')>()) };
   mod.imgBaseUrl = (img) => `downsized-${img.src}`;
   mod.sizedImg = (baseUrl, width) => `${baseUrl}?w=${width}`;
   mod.blurImgUrl = (_, img) => `blurred-${img.src}`;

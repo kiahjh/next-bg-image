@@ -1,5 +1,5 @@
-import * as imageImport from "next/image";
-import type { StaticImageData } from "next/image";
+import * as imageImport from 'next/image';
+import type { StaticImageData } from 'next/image';
 
 export function imgBaseUrl(image: StaticImageData): string | null {
   if (`unstable_getImgProps` in imageImport) {
@@ -40,6 +40,5 @@ export function blurImgUrl(baseUrl: string, image: StaticImageData): string {
 }
 
 export const SUPPORTED_IMAGE_WIDTHS = [
-  16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048,
-  3840,
+  16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840,
 ] as const;
