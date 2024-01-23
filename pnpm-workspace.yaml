@@ -1,3 +1,4 @@
 packages:
-  - 'next-playground'
-  - 'next-bg-image'
+  - "next-bg-image"
+  - "docs"
+  - "next-playground"
