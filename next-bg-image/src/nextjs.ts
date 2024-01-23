@@ -1,15 +1,28 @@
-import { unstable_getImgProps } from 'next/image';
-import type { StaticImageData } from 'next/image';
+import * as imageImport from "next/image";
+import type { StaticImageData } from "next/image";
 
 export function imgBaseUrl(image: StaticImageData): string | null {
-  const imgProps = unstable_getImgProps({
-    src: image.src,
-    alt: ``,
-    width: image.width,
-    height: image.height,
-  });
+  if (`unstable_getImgProps` in imageImport) {
+    // @ts-ignore
+    const imgProps = imageImport.unstable_getImgProps({
+      src: image.src,
+      alt: ``,
+      width: image.width,
+      height: image.height,
+    });
 
-  return imgProps.props.srcSet?.split(/\s/)[0]?.split(`&`)[0] ?? null;
+    return imgProps.props.srcSet?.split(/\s/)[0]?.split(`&`)[0] ?? null;
+  } else {
+    // @ts-ignore
+    const imgProps = imageImport.getImageProps({
+      src: image.src,
+      alt: ``,
+      width: image.width,
+      height: image.height,
+    });
+
+    return imgProps.props.srcSet?.split(/\s/)[0]?.split(`&`)[0] ?? null;
+  }
 }
 
 export function sizedImg(baseUrl: string, width: number): string {
@@ -27,5 +40,6 @@ export function blurImgUrl(baseUrl: string, image: StaticImageData): string {
 }
 
 export const SUPPORTED_IMAGE_WIDTHS = [
-  16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840,
+  16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048,
+  3840,
 ] as const;
