@@ -3,7 +3,7 @@ import type {
   CssBgImageLayer,
   CssUrlImageLayer,
   SizedUrlImage,
-} from './types';
+} from "./types";
 
 export function imagesToPreload(
   ranges: Array<MediaQueryRange>,
