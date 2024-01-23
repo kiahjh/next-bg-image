@@ -18,3 +18,6 @@ publish *FLAGS: build
 
 dev-playground:
   @pnpm --filter next-playground dev
+
+dev-docs:
+  @pnpm --filter docs dev
