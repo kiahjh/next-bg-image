@@ -1,13 +1,16 @@
-"use client";
+import React from 'react';
+import cx from 'classnames';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { atomOneDark } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import NextBgImage, { bgColor } from '../../../next-bg-image/src';
+import { spaceGrotesk } from '@/lib/fonts';
 
-import React from "react";
-import cx from "classnames";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { atomOneDark } from "react-syntax-highlighter/dist/cjs/styles/hljs";
-import NextBgImage, { bgColor } from "../../../next-bg-image/src";
-import { spaceGrotesk } from "@/lib/fonts";
+import FlowersImage from '@/public/flowers.jpg';
 
-import FlowersImage from "@/public/flowers.jpg";
+export const metadata = {
+  title: `next-bg-image / demos`,
+  description: `Demos for next-bg-image, a React component for responsive, optimized, and accessible background images within Next.js projects.`,
+};
 
 const DemoPage: React.FC = () => (
   <main className="xl:px-12 py-12 flex flex-col gap-12 sm:bg-slate-50">
@@ -36,8 +39,8 @@ export default MyComponent;
         <div className="bg-white/80 backdrop-blur p-8 rounded-2xl">
           <h1 className="text-3xl font-bold mb-2">Lorem ipsum</h1>
           <p className="text-slate-600">
-            Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint
-            cillum sint consectetur cupidatat.
+            Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum
+            sint consectetur cupidatat.
           </p>
         </div>
       </NextBgImage>
@@ -70,8 +73,8 @@ export default MyComponent;
       >
         <h1 className="text-3xl font-bold mb-2 text-white">Lorem ipsum</h1>
         <p className="text-white/80 text-center">
-          Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint
-          cillum sint consectetur cupidatat.
+          Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint
+          consectetur cupidatat.
         </p>
       </NextBgImage>
     </Demo>
@@ -109,8 +112,8 @@ export default MyComponent;
       >
         <h1 className="text-3xl font-bold mb-2 text-white">Lorem ipsum</h1>
         <p className="text-white/80 text-center">
-          Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint
-          cillum sint consectetur cupidatat.
+          Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint
+          consectetur cupidatat.
         </p>
       </NextBgImage>
     </Demo>
@@ -161,8 +164,8 @@ export default MyComponent;
         <div className="bg-white/40 backdrop-blur p-8 w-[300px]">
           <h1 className="text-3xl font-bold mb-2 text-black">Lorem ipsum</h1>
           <p className="text-slate-500">
-            Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint
-            cillum sint consectetur cupidatat.
+            Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum
+            sint consectetur cupidatat.
           </p>
         </div>
       </NextBgImage>
@@ -182,12 +185,8 @@ interface DemoProps {
 const Demo: React.FC<DemoProps> = ({ title, description, code, children }) => (
   <div className="flex flex-col bg-white p-6 sm:p-8 md:p-12 rounded-3xl">
     <div className="flex flex-col">
-      <h2 className={cx(`font-bold text-4xl text-blue-950`, spaceGrotesk)}>
-        {title}
-      </h2>
-      <p className="text-lg sm:text-xl text-blue-900/60 mt-4 mb-8">
-        {description}
-      </p>
+      <h2 className={cx(`font-bold text-4xl text-blue-950`, spaceGrotesk)}>{title}</h2>
+      <p className="text-lg sm:text-xl text-blue-900/60 mt-4 mb-8">{description}</p>
     </div>
     <div className="flex flex-col-reverse lg:flex-row gap-8 xl:gap-12">
       <SyntaxHighlighter

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import cx from "classnames";
-import { GithubIcon, MenuIcon } from "lucide-react";
-import { usePathname } from "next/navigation";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { spaceGrotesk } from "@/lib/fonts";
-import "./globals.css";
+import Link from 'next/link';
+import cx from 'classnames';
+import { GithubIcon, MenuIcon } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { spaceGrotesk } from '@/lib/fonts';
+import './globals.css';
 
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const path = usePathname();
@@ -20,9 +20,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <div className="w-7 h-1.5 rounded-full bg-gradient-to-b from-blue-300 to-blue-400 relative" />
               <div className="w-5 h-1.5 rounded-full bg-gradient-to-b from-blue-300 to-blue-400 relative" />
             </div>
-            <span
-              className={cx(`text-3xl font-bold text-blue-900`, spaceGrotesk)}
-            >
+            <span className={cx(`text-3xl font-bold text-blue-900`, spaceGrotesk)}>
               next-bg-image
             </span>
           </Link>

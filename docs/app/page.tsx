@@ -1,8 +1,13 @@
-import cx from "classnames";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import type { NextPage } from "next";
-import { spaceGrotesk } from "@/lib/fonts";
+import cx from 'classnames';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+import type { NextPage } from 'next';
+import { spaceGrotesk } from '@/lib/fonts';
+
+export const metadata = {
+  title: `next-bg-image`,
+  description: `Responsive, optimized, and accessible background images for Next.js.`,
+};
 
 const Home: NextPage = () => (
   <main className="flex flex-col min-h-[calc(100vh-88px)] bg-gradient-to-b from-white to-blue-100">
@@ -60,10 +65,7 @@ const Home: NextPage = () => (
           @jaredh159
         </Link>
         {` `}and{` `}
-        <Link
-          href="https://github.com/kiahjh"
-          className="font-medium text-blue-900/70"
-        >
+        <Link href="https://github.com/kiahjh" className="font-medium text-blue-900/70">
           @kiahjh
         </Link>
       </span>
