@@ -6,6 +6,8 @@
 > [`next/image`](https://nextjs.org/docs/app/api-reference/components/image) to provide
 > responsive and optimized background images.
 
+See working demos [here.](https://next-bg-image.kiahjh.com/demos)
+
 ## Installation:
 
 ```bash
@@ -41,9 +43,9 @@ yarn add next-bg-image
 ## Usage:
 
 ```tsx
-import React from 'react';
-import NextBgImage from 'next-bg-image';
-import SunsetImage from '/images/backgrounds/sunset.jpg';
+import React from "react";
+import NextBgImage from "next-bg-image";
+import SunsetImage from "/images/backgrounds/sunset.jpg";
 
 const MyComponent: React.FC = () => (
   <NextBgImage src={SunsetImage}>
@@ -82,13 +84,13 @@ your project, then you can still use it with `NextBgImage` by constructing an ob
 the `src`, `height`, and `width` properties. For example:
 
 ```tsx
-import React from 'react';
-import NextBgImage from 'next-bg-image';
+import React from "react";
+import NextBgImage from "next-bg-image";
 
 const MyComponent: React.FC = () => (
   <NextBgImage
     src={{
-      src: 'https://example.com/images/sunset.jpg',
+      src: "https://example.com/images/sunset.jpg",
       height: 1080,
       width: 1920,
     }}
@@ -110,8 +112,8 @@ For `NextBgImage` to work, at some point in your project you need to render the
 this:
 
 ```tsx
-import React from 'react';
-import { NextBgStaticCss } from 'next-bg-image';
+import React from "react";
+import { NextBgStaticCss } from "next-bg-image";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <>
@@ -129,13 +131,16 @@ A common pattern in web development is to use a semi-transparent gradient or ove
 overtop a background image. This is super easy to do with `NextBgImage`:
 
 ```tsx
-import React from 'react';
-import NextBgImage from 'next-bg-image';
-import SunsetImage from '/images/backgrounds/sunset.jpg';
+import React from "react";
+import NextBgImage from "next-bg-image";
+import SunsetImage from "/images/backgrounds/sunset.jpg";
 
 const MyComponent: React.FC = () => (
   <NextBgImage
-    src={['radial-gradient(rgba(0 0 0 / 0.28), rgba(0 0 0 / 0.6) 65%)', SunsetImage]}
+    src={[
+      "radial-gradient(rgba(0 0 0 / 0.28), rgba(0 0 0 / 0.6) 65%)",
+      SunsetImage,
+    ]}
   >
     <h1>Hello, world!</h1>
     {/* more things... */}
@@ -150,12 +155,12 @@ image. As a shortcut for a single-color overlay, we also ship a `bgColor` utilit
 that you can use like this:
 
 ```tsx
-import React from 'react';
-import NextBgImage, { bgColor } from 'next-bg-image';
-import SunsetImage from '/images/backgrounds/sunset.jpg';
+import React from "react";
+import NextBgImage, { bgColor } from "next-bg-image";
+import SunsetImage from "/images/backgrounds/sunset.jpg";
 
 const MyComponent: React.FC = () => (
-  <NextBgImage src={[bgColor('rgb(0 0 0 / 0.28)'), SunsetImage]}>
+  <NextBgImage src={[bgColor("rgb(0 0 0 / 0.28)"), SunsetImage]}>
     <h1>Hello, world!</h1>
     {/* more things... */}
   </NextBgImage>
@@ -174,13 +179,13 @@ the same thing that was happening in the above examples with gradients and overl
 can be used with any combination of images, gradients, and overlays. For example:
 
 ```tsx
-import React from 'react';
-import NextBgImage, { bgColor } from 'next-bg-image';
-import SunsetImage from '/images/backgrounds/sunset.jpg';
-import LogoImage from '/images/brand/logo.png';
+import React from "react";
+import NextBgImage, { bgColor } from "next-bg-image";
+import SunsetImage from "/images/backgrounds/sunset.jpg";
+import LogoImage from "/images/brand/logo.png";
 
 const MyComponent: React.FC = () => (
-  <NextBgImage src={[bgColor('rgb(0 0 0 / 0.28)'), LogoImage, SunsetImage]}>
+  <NextBgImage src={[bgColor("rgb(0 0 0 / 0.28)"), LogoImage, SunsetImage]}>
     <h1>Hello, world!</h1>
     {/* more things... */}
   </NextBgImage>
@@ -203,9 +208,9 @@ load, this will slow down the initial page load. To solve this, `NextBgImage` su
 lazy loading. To enable lazy loading, simply pass the `lazyLoad` prop:
 
 ```tsx
-import React from 'react';
-import NextBgImage from 'next-bg-image';
-import SunsetImage from '/images/backgrounds/sunset.jpg';
+import React from "react";
+import NextBgImage from "next-bg-image";
+import SunsetImage from "/images/backgrounds/sunset.jpg";
 
 const MyComponent: React.FC = () => (
   <NextBgImage src={SunsetImage} lazyLoad>
@@ -225,9 +230,9 @@ which the component will load the appropriately sized image is set to a default 
 but can be configured with the `lazyThreshold` prop:
 
 ```tsx
-import React from 'react';
-import NextBgImage from 'next-bg-image';
-import SunsetImage from '/images/backgrounds/sunset.jpg';
+import React from "react";
+import NextBgImage from "next-bg-image";
+import SunsetImage from "/images/backgrounds/sunset.jpg";
 
 const MyComponent: React.FC = () => (
   <NextBgImage src={SunsetImage} lazyLoad lazyThreshold={1000}>
@@ -249,9 +254,9 @@ By default, the background image you pass to `NextBgImage` will be centered and 
 entire element. If you want to change this, you can use the `size` and `position` props:
 
 ```tsx
-import React from 'react';
-import NextBgImage from 'next-bg-image';
-import SunsetImage from '/images/backgrounds/sunset.jpg';
+import React from "react";
+import NextBgImage from "next-bg-image";
+import SunsetImage from "/images/backgrounds/sunset.jpg";
 
 const MyComponent: React.FC = () => (
   <NextBgImage src={SunsetImage} size="contain" position="bottom left">
@@ -268,22 +273,22 @@ But commonly you'll want to have custom positions and sizes for different screen
 For this, you can pass on object like this:
 
 ```tsx
-import React from 'react';
-import NextBgImage from 'next-bg-image';
-import SunsetImage from '/images/backgrounds/sunset.jpg';
+import React from "react";
+import NextBgImage from "next-bg-image";
+import SunsetImage from "/images/backgrounds/sunset.jpg";
 
 const MyComponent: React.FC = () => (
   <NextBgImage
     src={SunsetImage}
     size={{
-      base: 'cover',
-      768: 'contain',
-      1280: 'cover',
+      base: "cover",
+      768: "contain",
+      1280: "cover",
     }}
     position={{
-      base: 'center',
-      768: 'bottom left',
-      1280: '20px -400px',
+      base: "center",
+      768: "bottom left",
+      1280: "20px -400px",
     }}
   >
     <h1>Hello, world!</h1>
@@ -302,24 +307,24 @@ keys, and it will correspond to a media query breakpoint. You can also use
 [Tailwind's breakpoints](https://tailwindcss.com/docs/responsive-design):
 
 ```tsx
-import React from 'react';
-import NextBgImage from 'next-bg-image';
-import SunsetImage from '/images/backgrounds/sunset.jpg';
+import React from "react";
+import NextBgImage from "next-bg-image";
+import SunsetImage from "/images/backgrounds/sunset.jpg";
 
 const MyComponent: React.FC = () => (
   <NextBgImage
     src={SunsetImage}
     size={{
-      base: 'cover',
-      md: 'contain',
-      xl: 'cover',
-      2048: 'contain',
+      base: "cover",
+      md: "contain",
+      xl: "cover",
+      2048: "contain",
     }}
     position={{
-      base: 'center',
-      md: 'bottom left',
-      xl: '20px -400px',
-      2048: 'bottom right',
+      base: "center",
+      md: "bottom left",
+      xl: "20px -400px",
+      2048: "bottom right",
     }}
   >
     <h1>Hello, world!</h1>
@@ -337,9 +342,9 @@ export default MyComponent;
   `as` prop:
 
   ```tsx
-  import React from 'react';
-  import NextBgImage from 'next-bg-image';
-  import SunsetImage from '/images/backgrounds/sunset.jpg';
+  import React from "react";
+  import NextBgImage from "next-bg-image";
+  import SunsetImage from "/images/backgrounds/sunset.jpg";
 
   const MyComponent: React.FC = () => (
     <NextBgImage as="a" href="https://example.com" src={SunsetImage}>
@@ -367,9 +372,9 @@ export default MyComponent;
   wide as the `div` is tall. To do this, you can pass the `minImageWidth` prop:
 
   ```tsx
-  import React from 'react';
-  import NextBgImage from 'next-bg-image';
-  import SunsetImage from '/images/backgrounds/sunset.jpg';
+  import React from "react";
+  import NextBgImage from "next-bg-image";
+  import SunsetImage from "/images/backgrounds/sunset.jpg";
 
   const MyComponent: React.FC = () => (
     <NextBgImage src={SunsetImage} minImageWidth={1080}>
