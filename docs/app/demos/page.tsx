@@ -16,7 +16,7 @@ const DemoPage: React.FC = () => (
   <main className="xl:px-12 py-12 flex flex-col gap-12 sm:bg-slate-50">
     <Demo
       title="Basic use case"
-      description="Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
+      description="The most common use case, with a single image and a centered content, requires no configuration."
       code={`
 import NextBgImage from "next-bg-image";
 
@@ -47,7 +47,7 @@ export default MyComponent;
     </Demo>
     <Demo
       title="Color overlay"
-      description="Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
+      description="A common pattern is to add a color overlay to the image, to make the text more readable. `next-bg-image` supports this with the `bgColor` utility function."
       code={`
 import NextBgImage, { bgColor } from "next-bg-image";
 
@@ -80,7 +80,7 @@ export default MyComponent;
     </Demo>
     <Demo
       title="Gradient overlay"
-      description="Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
+      description="Another way to make text or other content more readable is to add a gradient overlay. `next-bg-image` supports this by accepting an array of images, which are layered on top of each other."
       code={`
 import NextBgImage from "next-bg-image";
 
@@ -119,7 +119,7 @@ export default MyComponent;
     </Demo>
     <Demo
       title="Custom background size/position"
-      description="Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
+      description="By default, `next-bg-image` will use `cover` for the `background-size` property, and `center` for the `background-position` property. You can override these values with the `size` and `position` props. These can also be responsive objects, which will be applied at the specified breakpoints."
       code={`
 import NextBgImage from "next-bg-image";
 
@@ -186,7 +186,17 @@ const Demo: React.FC<DemoProps> = ({ title, description, code, children }) => (
   <div className="flex flex-col bg-white p-6 sm:p-8 md:p-12 rounded-3xl">
     <div className="flex flex-col">
       <h2 className={cx(`font-bold text-4xl text-blue-950`, spaceGrotesk)}>{title}</h2>
-      <p className="text-lg sm:text-xl text-blue-900/60 mt-4 mb-8">{description}</p>
+      <p
+        className="text-lg sm:text-xl text-blue-900/60 mt-4 mb-8 max-w-5xl"
+        dangerouslySetInnerHTML={{
+          __html: description
+            .replaceAll(
+              ` \``,
+              ` <code style="background:#e2e8f0;padding:2px 6px;border-radius:8px;font-size:18px">`,
+            )
+            .replaceAll(`\` `, `</code> `),
+        }}
+      />
     </div>
     <div className="flex flex-col-reverse lg:flex-row gap-8 xl:gap-12">
       <SyntaxHighlighter
