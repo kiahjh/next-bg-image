@@ -25,7 +25,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </span>
           </Link>
           <DropdownMenu.Root>
-            <DropdownMenu.Trigger className="w-10 h-10 border border-slate-200 rounded-full justify-center items-center text-slate-400 hover:bg-slate-50 transition-colors duration-200 flex sm:hidden">
+            <DropdownMenu.Trigger className="w-10 h-10 border border-slate-200 rounded-full justify-center items-center text-slate-400 hover:bg-slate-50 transition-colors duration-200 flex md:hidden">
               <MenuIcon />
             </DropdownMenu.Trigger>
             <DropdownMenu.Portal>
@@ -33,6 +33,11 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <DropdownMenu.Item className="hover:bg-slate-50 rounded-lg outline-none">
                   <Link href="/demos" className="px-4 py-2 block">
                     Demos
+                  </Link>
+                </DropdownMenu.Item>
+                <DropdownMenu.Item className="hover:bg-slate-50 rounded-lg outline-none">
+                  <Link href="/changelog" className="px-4 py-2 block">
+                    Changelog
                   </Link>
                 </DropdownMenu.Item>
                 <DropdownMenu.Item className="hover:bg-slate-50 rounded-lg outline-none">
@@ -54,7 +59,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               </DropdownMenu.Content>
             </DropdownMenu.Portal>
           </DropdownMenu.Root>
-          <nav className="gap-8 hidden sm:flex">
+          <nav className="gap-8 hidden md:flex">
             <Link
               href="/demos"
               className={cx(
@@ -63,6 +68,15 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               )}
             >
               Demos
+            </Link>
+            <Link
+              href="/changelog"
+              className={cx(
+                `text-lg text-blue-900/50 hover:text-blue-900/70`,
+                path === `/changelog` && `!text-blue-400`,
+              )}
+            >
+              Changelog
             </Link>
             <Link
               href="https://github.com/kiahjh/next-bg-image/blob/master/README.md"

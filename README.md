@@ -29,6 +29,8 @@ yarn add next-bg-image
 - **Automatic size optimization** - automatically generates an appropriately sized image
   to ensure that no image is rendered larger than it needs to be
 - **Lazy loading** - images can be optionally lazy loaded to improve page performance
+- **Eager loading** - the opposite of lazy loading; prioritize loading for important
+  background images in the initial viewport
 - **Multiple background images** - supports multiple background images (useful for
   overlays, semi-transparent images, gradients, etc.)
 - **Responsive viewport resizing optimization** - `NextBgImage` will never request a
@@ -244,6 +246,12 @@ export default MyComponent;
 Note that in most cases, the appropriately sized image is smaller than the full size of
 the image, because unless the viewport is at least as wide as the image, there is no
 reason to load a larger image.
+
+### Eager loading
+
+If you have a background image that is important and in the initial viewport (like the
+background for a hero, for example), you can pass the optional `eager` prop to make the
+browser prioritize loading that image.
 
 ### Custom size and position:
 
