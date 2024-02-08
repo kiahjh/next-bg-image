@@ -10,6 +10,9 @@ export default function Home(): any {
         <li>
           <Link href="/eager">Eager loading</Link>
         </li>
+        <li>
+          <Link href="/test-pages-router">test pages router</Link>
+        </li>
       </ul>
     </main>
   );

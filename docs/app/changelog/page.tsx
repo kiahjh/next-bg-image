@@ -14,6 +14,22 @@ const Changelog: NextPage = () => (
     <h1 className="text-4xl sm:text-5xl font-semibold text-slate-900">Changelog</h1>
     <div className="w-full max-w-2xl flex flex-col mt-12 gap-8">
       <Update
+        version="0.3.0"
+        date="February 8, 2024"
+        features={[
+          {
+            text: `improved eager loading`,
+            to: `https://github.com/kiahjh/next-bg-image?tab=readme-ov-file#eager-loading`,
+          },
+        ]}
+      >
+        <p>
+          When using the <code>eager</code> prop, the component now generates a{` `}
+          <code>{`<link rel="preload"/>`}</code> tag in your app's <code>{`<head>`}</code>
+          . This significantly accelerates the loading of important images.
+        </p>
+      </Update>
+      <Update
         version="0.2.0"
         date="January 23, 2024"
         features={[
@@ -112,7 +128,7 @@ const Update: React.FC<UpdateProps> = ({ version, date, children, features }) =>
         </Link>
       ))}
     </div>
-    <div className="mt-8 text-slate-500 flex flex-col gap-3 [&_code]:bg-pink-100 [&_code]:text-pink-500 [&_code]:text-[0.95rem] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded-lg [&_a]:text-blue-500">
+    <div className="mt-6 text-slate-500 flex flex-col gap-3 [&_code]:bg-pink-100 [&_code]:text-pink-500 [&_code]:text-[0.95rem] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded-lg [&_a]:text-blue-500">
       {children}
     </div>
   </div>
