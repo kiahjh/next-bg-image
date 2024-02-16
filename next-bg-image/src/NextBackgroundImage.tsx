@@ -1,6 +1,9 @@
 'use client';
 
 import React, { useEffect, useId, useState } from 'react';
+import ReactDOM from 'react-dom';
+import * as routerExport from 'next/navigation';
+import Head from 'next/head';
 import type { StaticImageData } from 'next/image';
 import type {
   IntrinsicProps,
@@ -28,7 +31,7 @@ const NextBackgroundImage: React.FC<Props> = ({
   children,
   className,
   lazyLoad = false,
-  eager: inputEager = false,
+  eager = false,
   lazyThreshold = 500,
   minImageWidth,
   size = `cover`,
@@ -40,8 +43,6 @@ const NextBackgroundImage: React.FC<Props> = ({
   const cssData = getCssData(layers, minImageWidth);
   const id = `__nbgi_` + useId().replace(/:/g, ``);
 
-  const srcSets = extract.preloadSrcSets(cssData.mediaQueryRanges);
-
   const { intersected, ref } = useIntersectionObserver(lazyLoad, {
     rootMargin: typeof lazyThreshold === `string` ? lazyThreshold : `${lazyThreshold}px`,
     threshold: 0,
@@ -49,7 +50,6 @@ const NextBackgroundImage: React.FC<Props> = ({
 
   const [imageLoaded, setImageLoaded] = useState(false);
   const [initialWindowWidth, setInitialWindowWidth] = useState<number | null>(null);
-  const [eager, setEager] = useState(inputEager);
 
   useEffect(() => {
     if (intersected) {
@@ -70,31 +70,10 @@ const NextBackgroundImage: React.FC<Props> = ({
 
   useEffect(() => {
     setInitialWindowWidth(window.innerWidth);
-    setEager(false);
   }, []);
 
   return (
     <>
-      {eager &&
-        srcSets.map((srcSet) => (
-          <img
-            key={srcSet}
-            srcSet={srcSet}
-            // @ts-ignore
-            fetchPriority="high"
-            alt=""
-            style={{
-              display: `inline-block`,
-              position: `absolute`,
-              overflow: `hidden`,
-              clip: `rect(0 0 0 0)`,
-              height: 1,
-              margin: -1,
-              padding: 0,
-              border: 0,
-            }}
-          />
-        ))}
       {/* @ts-ignore */}
       <Element
         // @ts-ignore
@@ -117,8 +96,41 @@ const NextBackgroundImage: React.FC<Props> = ({
           __html: componentCss(id, cssData, lazyLoad, size, position, initialWindowWidth),
         }}
       />
+      {eager && (
+        <ImagePreload srcSets={extract.preloadSrcSets(cssData.mediaQueryRanges)} />
+      )}
     </>
   );
 };
 
 export default NextBackgroundImage;
+
+const ImagePreload: React.FC<{ srcSets: string[] }> = ({ srcSets }) => {
+  const isAppRouter = Object.prototype.toString.call(routerExport).includes(`Module`);
+
+  if (isAppRouter && ReactDOM.preload) {
+    srcSets.forEach((srcSet) => {
+      ReactDOM.preload(`...`, {
+        // @ts-expect-error (the next ppl said it was ok)
+        as: `image`,
+        imageSrcSet: srcSet,
+        fetchPriority: `high`,
+      });
+    });
+    return null;
+  }
+
+  return (
+    <Head>
+      {srcSets.map((srcSet) => (
+        <link
+          rel="preload"
+          as="image"
+          imageSrcSet={srcSet}
+          fetchpriority="high"
+          key={srcSet}
+        />
+      ))}
+    </Head>
+  );
+};
