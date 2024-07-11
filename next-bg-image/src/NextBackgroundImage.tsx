@@ -4,11 +4,11 @@ import React, { useEffect, useId, useState } from 'react';
 import ReactDOM from 'react-dom';
 import * as routerExport from 'next/navigation';
 import Head from 'next/head';
-import type { StaticImageData } from 'next/image';
 import type {
   IntrinsicProps,
   CssGradientString,
   BreakpointCustomizableCssRule,
+  BgImageData,
 } from './types';
 import { componentCss } from './css';
 import getCssData from './lib';
@@ -16,7 +16,7 @@ import { useIntersectionObserver } from './hooks';
 import * as extract from './extract';
 
 type Props = {
-  src: StaticImageData | Array<StaticImageData | CssGradientString>;
+  src: BgImageData | Array<BgImageData | CssGradientString>;
   children?: React.ReactNode;
   lazyLoad?: boolean;
   eager?: boolean;

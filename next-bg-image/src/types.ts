@@ -18,6 +18,14 @@ export interface CssGradientLayer {
   value: string;
 }
 
+export interface BgImageData {
+  width: number;
+  height: number;
+  src: string;
+  blurDataURL?: string;
+  optimize?: false;
+}
+
 export type CssBgImageLayer = CssUrlImageLayer | CssGradientLayer;
 
 export type CssGradientString = string;

@@ -1,7 +1,7 @@
 import * as imageImport from 'next/image';
-import type { StaticImageData } from 'next/image';
+import type { BgImageData } from './types';
 
-export function imgBaseUrl(image: StaticImageData): string | null {
+export function imgBaseUrl(image: BgImageData): string | null {
   if (`unstable_getImgProps` in imageImport) {
     // @ts-ignore
     const imgProps = imageImport.unstable_getImgProps({
@@ -29,7 +29,7 @@ export function sizedImg(baseUrl: string, width: number): string {
   return `${baseUrl}&w=${width}&q=75`;
 }
 
-export function blurImgUrl(baseUrl: string, image: StaticImageData): string {
+export function blurImgUrl(baseUrl: string, image: BgImageData): string {
   if (image.blurDataURL) {
     return image.blurDataURL;
   } else {

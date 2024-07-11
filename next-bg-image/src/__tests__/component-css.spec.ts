@@ -115,6 +115,41 @@ describe(`component assembled css`, () => {
     `);
   });
 
+  // TODO: this is inefficient, should collapse media queries
+  // leaving for alpha POC
+  test(`optimize=false, small img lazy server css`, () => {
+    const data = getCssData([{ ...cat, optimize: false }]);
+    const lazyCss = componentCss(`__nbgi_1`, data, true, `cover`, `center`, null);
+    expect(lazyCss).toMatchInlineSnapshot(`
+      "@media (min-width: 641px) {
+        .__nbgi_1.__nbgi_loaded::after {
+          background-image: url(cat.jpg);
+        }
+      }
+      @media (max-width: 640px) {
+        .__nbgi_1.__nbgi_loaded::after {
+          background-image: url(cat.jpg);
+        }
+      }
+      @media (max-width: 384px) {
+        .__nbgi_1.__nbgi_loaded::after {
+          background-image: url(cat.jpg);
+        }
+      }
+      .__nbgi_1::before {
+        background-image: url(blurred-cat.jpg);
+      }
+      .__nbgi_1::before {
+        background-size: cover;
+        background-position: center;
+      }
+      .__nbgi_1::after {
+        background-size: cover;
+        background-position: center;
+      }"
+    `);
+  });
+
   test(`one string, one obj`, () => {
     const data = getCssData([cat]);
     const lazyCss = componentCss(
