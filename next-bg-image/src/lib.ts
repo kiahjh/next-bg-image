@@ -1,15 +1,15 @@
-import type { StaticImageData } from 'next/image';
 import type {
   CssGradientString,
   MediaQueryRange,
   CssBgImageLayer,
   SupportedImageWidth,
   CssData,
+  BgImageData,
 } from './types';
 import * as nextjs from './nextjs';
 
 export default function cssData(
-  srcPropLayers: Array<StaticImageData | CssGradientString>,
+  srcPropLayers: Array<BgImageData | CssGradientString>,
   minImageWidth?: number,
 ): CssData {
   const [layers, blurImageLayers, largestImageWidth] = extractData(srcPropLayers);
@@ -78,7 +78,7 @@ type LayerData =
   | { type: 'fullsizeFallback'; url: string; width: number; height: number };
 
 function extractData(
-  inputLayers: Array<StaticImageData | CssGradientString>,
+  inputLayers: Array<BgImageData | CssGradientString>,
 ): [layers: Array<LayerData>, placeholderImages: string[], largestImageWidth: number] {
   const layers: Array<LayerData> = [];
   const placeholderLayers: string[] = [];
@@ -110,6 +110,17 @@ function extractData(
     }
 
     placeholderLayers.push(`url(${nextjs.blurImgUrl(baseUrl, image)})`);
+
+    if (image.optimize === false) {
+      layers.push({
+        type: `fullsizeFallback`,
+        url: image.src,
+        width: image.width,
+        height: image.height,
+      });
+      continue;
+    }
+
     const widths = nextjs.SUPPORTED_IMAGE_WIDTHS.reduce(
       (acc, size) => ({ ...acc, [size]: nextjs.sizedImg(baseUrl, size) }),
       {} as AllSupportedWidths,
